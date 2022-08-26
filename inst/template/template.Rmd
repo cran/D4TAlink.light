@@ -1,0 +1,113 @@
+---
+title: '%TASK%'
+subtitle: 'Task report'
+author: '%AUTHOR%'
+date: '%DATE%'
+output: 
+  pdf_document:
+    number_sections: true
+    toc: true
+header-includes:
+  - \usepackage{fancyhdr}
+  - \pagestyle{fancy}
+  - \fancyhead[CO,CE]{%TASKIDX%}
+  - \fancyhead[LO,LE]{}
+  - \fancyhead[RO,RE]{}
+  - \fancyfoot[CO,CE]{%COPYRIGHTX%}
+  - \fancyfoot[RO,LE]{\thepage}
+  - \fancyfoot[LO,RE]{}
+  - \fancypagestyle{plain}{\pagestyle{fancy}}
+classoption: twoside
+geometry: 'left=2cm,right=2cm,top=3cm,bottom=2cm'
+---
+
+```{r optionsChunk, echo=FALSE, message=FALSE, warning=FALSE}
+library(knitr)
+opts_chunk$set(
+	eval = TRUE, 
+	echo = TRUE,
+	comment = "#",
+	error = TRUE, 
+	dpi = 150
+)
+options(warn = 1)
+library(D4TAlink.light)
+task <- initTask(project="%PROJECT%",
+                 package="%PACKAGE%",
+                 taskname="%TASK%",
+                 sponsor="%SPONSOR%",
+                 author="%AUTHOR%")
+```
+
+```{r loadLibraries, echo=FALSE}
+# Load dependencies
+library(stats)
+```
+
+\newpage
+
+# Scope
+
+In this section the scope / rationale of the task should be explained.
+
+\newpage
+
+# Input
+
+The section list the information and data sources.
+
+* List of patients (see email by JD dated 2022-05-01 17:12).
+* List of assays (see task 20220102_loadAssays).
+
+```{r loadInput, echo=FALSE}
+
+# Code to load input data
+
+# ta <- loadTask(task$project,task$package,"20220102_loadAssays)
+# ass <- readBinary(ta,"assays")
+
+```
+
+\newpage
+
+# Methods and Results
+
+The results-section contains more details regarding the results of task X.
+
+```{r consideredRCode, echo=TRUE}
+
+# Chunk that contains the analysis R code.
+
+```
+
+\newpage
+
+# Output
+
+The section contains detailed information on output (incl. location).
+
+* List of assays.
+
+```{r saveOutput, echo=FALSE}
+
+# Code to save data
+
+# saveBinary(ass,ta,"assays")
+
+```
+
+
+\newpage
+
+# Appendices
+
+## Session information
+
+```{r sessionInfo, echo=FALSE, results="asis"}
+
+# In the appendix the session information is being printed for reproducibility.
+
+sessionInfo()
+
+```
+
