@@ -125,3 +125,14 @@ progDir <- function(task,subdir=NULL,dirCreate=TRUE)
 
 ## =======================================================================
 
+## =======================================================================
+#' Generic function.
+#' @inheritParams D4TAlink-common-args
+#' @return \code{NULL}.
+#' @export
+DTx <- function(sponsor=getTaskSponsor(),task=NULL) {
+  setTaskSponsor(sponsor)
+  invisible(NULL)
+}
+## =======================================================================
+

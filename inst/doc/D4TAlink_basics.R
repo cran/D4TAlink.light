@@ -4,20 +4,26 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-## ---- init, eval=FALSE--------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
+#  install.packages("D4TAlink.light")
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  devtools::install_bitbucket("SQ4/d4talink.light",subdir="D4TAlink.light")
+
+## ---- eval=FALSE--------------------------------------------------------------
 #  library(D4TAlink.light)
 #  
 #  setTaskAuthor("Doe Johns")
 #  setTaskSponsor("mySponsor")
 
-## ---- setroot, eval=FALSE-----------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  setTaskRoot(file.path(tempdir(),"D4TAlink_example001"),dirCreate=TRUE)
 
-## ---- setother, eval=FALSE----------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  setTaskRmdTemplate("/SOME/WHERE/my.Rmd")
 #  setTaskStructure(pathsDefault)
 
-## ---- mktask1, eval=FALSE-----------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  # make sure that the sopnsor was defined
 #  setTaskSponsor("mySponsor")
 #  
@@ -26,35 +32,35 @@ knitr::opts_chunk$set(
 #                   package="myPackage",
 #                   taskname=sprintf("%s_myTask",format(Sys.time(),"%Y%m%d")))
 
-## ---- mkplot1, eval=FALSE-----------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  file <- pdfReport(task,c("plots",1),dim=c(100,100))
 #  hist(rnorm(100))
 #  dev.off()
 #  openPDF(file)
 
-## ---- mkplot2, eval=FALSE-----------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  file <- pngReport(task,c("plots",1),dim=c(300,300))
 #  hist(rnorm(100))
 #  dev.off()
 #  print(file)
 
-## ---- mkplot3, eval=FALSE-----------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  file <- jpegReport(task,c("plots",1),dim=c(300,300))
 #  hist(rnorm(100))
 #  dev.off()
 #  print(file)
 
-## ---- mkxls, eval=FALSE-------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  d <- list(letters=data.frame(a=LETTERS,b=letters,c=1:length(letters)),
 #            other=data.frame(a=1:3,b=11:13))
 #  file <- saveReportXls(d,task,"tables")
 #  print(file)
 
-## ---- mkcsv, eval=FALSE-------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  file <- saveReportTable(d$letters,task,"tables")
 #  print(file)
 
-## ---- trbin, eval=FALSE-------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  d <- list(letters=data.frame(a=LETTERS,b=letters,c=1:length(letters)),
 #            other=data.frame(a=1:3,b=11:13))
 #  task <- initTask(project="myProject",
@@ -63,21 +69,25 @@ knitr::opts_chunk$set(
 #  file <- saveBinary(d,task,"someData")
 #  print(file)
 
-## ---- ldbin, eval=FALSE-------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  task <- initTask(project="myProject",
 #                   package="myPackage",
 #                   taskname="20220801_childTask")
 #  e <- readBinary(loadTask(task$project,task$package,"20220801_parentTask"),"someData")
 
-## ---- indo, eval=FALSE--------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  file <- initTaskRmd(task)
 #  print(file)
 
-## ---- redo, eval=FALSE--------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  file <- renderTaskRmd(task) # may require having run 'tinytex::install_tinytex()'
 #  openPDF(file)
 
-## ---- arch, eval=FALSE--------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
+#  file <- initTaskRscript(task)
+#  print(file)
+
+## ---- eval=FALSE--------------------------------------------------------------
 #  setTaskRoot(file.path(tempdir(),"D4TAlink_exampleFrom"),dirCreate=TRUE)
 #  task <- initTask(project="myProject",
 #                   package="myPackage",
@@ -86,7 +96,7 @@ knitr::opts_chunk$set(
 #  archiveTask(task,file)
 #  print(reportDir(task))
 
-## ---- reta, eval=FALSE--------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  setTaskRoot(file.path(tempdir(),"D4TAlink_exampleTo"),dirCreate=TRUE)
 #  restoreTask(file)
 #  newtask <- loadTask(project="myProject",
@@ -94,11 +104,11 @@ knitr::opts_chunk$set(
 #                      taskname="20220501_myTask")
 #  print(reportDir(newtask))
 
-## ---- srmd, eval=FALSE--------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  setTaskRmdTemplate("/SOME/WHERE/my.Rmd")
-#  
+#  setTaskRscriptTemplate("/SOME/WHERE/my.R")
 
-## ---- dstr, eval=FALSE--------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  fun <- function(project,package,taskname,sponsor) {
 #    basePath <- file.path("%ROOT%",sponsor,project,package)
 #    paths <- list(

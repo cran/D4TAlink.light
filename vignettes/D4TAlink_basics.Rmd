@@ -28,6 +28,24 @@ structuring of R&D activities in compliance with FAIR and ALCOA principles.
 1. FAIR principles: Jacobsen et al., 2017 ([doi:10.1162/dint_r_00024](https://doi.org/10.1162/dint_r_00024))
 2. ALCOA principles: Food & Drug Administration, 2018 ([Data Integrity and Compliance With Drug CGMP - Questions and Answers Guidance for Industry](<https://www.fda.gov/regulatory-information/search-fda-guidance-documents/data-integrity-and-compliance-drug-cgmp-questions-and-answers-guidance-industry>)).
 
+# Instalation #
+
+Install from [CRAN](https://CRAN.R-project.org/package=D4TAlink.light): 
+
+```{r, eval=FALSE}
+install.packages("D4TAlink.light")
+```
+
+Install latest version from [Bitbucket](https://bitbucket.org/SQ4/d4talink.light):
+
+```{r, eval=FALSE}
+devtools::install_bitbucket("SQ4/d4talink.light",subdir="D4TAlink.light")
+```
+
+Note that you may need to install: 
+- the Bioconductor package `Biobase`  ([instructions](https://bioconductor.org/install/)), and
+- Rtools ([cran.r-project.org/bin/windows](https://cran.r-project.org/bin/windows/)).
+
 # Tutorial #
 
 ## Setting base parameters ##
@@ -35,7 +53,7 @@ structuring of R&D activities in compliance with FAIR and ALCOA principles.
 Once the R package loaded, user must set D4TAlink's global parameters, namely 
 the name of the data analyst and the name of the study sponsor.
 
-```{r, init, eval=FALSE}
+```{r, eval=FALSE}
 library(D4TAlink.light)
 
 setTaskAuthor("Doe Johns")
@@ -46,13 +64,13 @@ The location of the data file repository, must then be defined. Indeed, D4TAlink
 manages data and information in flat files within a structured directory tree. 
 
 
-```{r, setroot, eval=FALSE}
+```{r, eval=FALSE}
 setTaskRoot(file.path(tempdir(),"D4TAlink_example001"),dirCreate=TRUE)
 ```
 
 As described below, other parameters can be defined.
 
-```{r, setother, eval=FALSE}
+```{r, eval=FALSE}
 setTaskRmdTemplate("/SOME/WHERE/my.Rmd")
 setTaskStructure(pathsDefault)
 ```
@@ -65,6 +83,7 @@ D4TAlink_author="Dow Johns"
 D4TAlink_sponsor="CompanyA"
 D4TAlink_root="/SOME/WHERE/D4TAlink_example001"
 D4TAlink_rmdtempl="/SOME/WHERE/my.Rmd"
+D4TAlink_rscripttempl="/SOME/WHERE/my.R"
 D4TAlink_pathgen="pathsDefault"
 ```
 
@@ -91,7 +110,7 @@ each project is assigned to a **sponsor**.
 
 To create an analysis task in R use the following calls.
 
-```{r, mktask1, eval=FALSE}
+```{r, eval=FALSE}
 # make sure that the sopnsor was defined
 setTaskSponsor("mySponsor")
 
@@ -125,7 +144,7 @@ and `DATA_TYPE` does not contain underscores or dots, `_` or `.`.
 To output a graphic file in the output directory of the task, use the following.
 
 **PDF**
-```{r, mkplot1, eval=FALSE}
+```{r, eval=FALSE}
 file <- pdfReport(task,c("plots",1),dim=c(100,100))
 hist(rnorm(100))
 dev.off()
@@ -133,7 +152,7 @@ openPDF(file)
 ```
 
 **PNG**
-```{r, mkplot2, eval=FALSE}
+```{r, eval=FALSE}
 file <- pngReport(task,c("plots",1),dim=c(300,300))
 hist(rnorm(100))
 dev.off()
@@ -141,7 +160,7 @@ print(file)
 ```
 
 **JPEG**
-```{r, mkplot3, eval=FALSE}
+```{r, eval=FALSE}
 file <- jpegReport(task,c("plots",1),dim=c(300,300))
 hist(rnorm(100))
 dev.off()
@@ -152,7 +171,7 @@ print(file)
 
 To output data frames as an Excel file in the output directory of the task, use the following:
 
-```{r, mkxls, eval=FALSE}
+```{r, eval=FALSE}
 d <- list(letters=data.frame(a=LETTERS,b=letters,c=1:length(letters)),
           other=data.frame(a=1:3,b=11:13))
 file <- saveReportXls(d,task,"tables")
@@ -161,7 +180,7 @@ print(file)
 
 and to output in a text file:
 
-```{r, mkcsv, eval=FALSE}
+```{r, eval=FALSE}
 file <- saveReportTable(d$letters,task,"tables")
 print(file)
 ```
@@ -176,7 +195,7 @@ is an example.
 
 Saving data in a parent task:
 
-```{r, trbin, eval=FALSE}
+```{r, eval=FALSE}
 d <- list(letters=data.frame(a=LETTERS,b=letters,c=1:length(letters)),
           other=data.frame(a=1:3,b=11:13))
 task <- initTask(project="myProject",
@@ -188,14 +207,14 @@ print(file)
 
 Loading data in a child task: 
 
-```{r, ldbin, eval=FALSE}
+```{r, eval=FALSE}
 task <- initTask(project="myProject",
                  package="myPackage",
                  taskname="20220801_childTask")
 e <- readBinary(loadTask(task$project,task$package,"20220801_parentTask"),"someData")
 ```
 
-## Task documentation ##
+## Create and render task documentation ##
 
 Documentation of a task is typically authored using 
 [R markdown](https://rmarkdown.rstudio.com/) files (Rmd). D4TAlink advises to have one 
@@ -203,16 +222,25 @@ Rmd file per task. `D4TAlink.light` provides functions to create and render thes
 
 Creation of an R markdown file from template:
 
-```{r, indo, eval=FALSE}
+```{r, eval=FALSE}
 file <- initTaskRmd(task)
 print(file)
 ```
 
 Rendering of the markdown file into the task documentation directory:
 
-```{r, redo, eval=FALSE}
+```{r, eval=FALSE}
 file <- renderTaskRmd(task) # may require having run 'tinytex::install_tinytex()'
 openPDF(file)
+```
+
+## Create a task R script ##
+
+For some task an R script may also be needed. The task script can be created from the default template: 
+
+```{r, eval=FALSE}
+file <- initTaskRscript(task)
+print(file)
 ```
 
 ## Task archiving ##
@@ -222,7 +250,7 @@ from one repository to another.
 
 Archiving a task: 
 
-```{r, arch, eval=FALSE}
+```{r, eval=FALSE}
 setTaskRoot(file.path(tempdir(),"D4TAlink_exampleFrom"),dirCreate=TRUE)
 task <- initTask(project="myProject",
                  package="myPackage",
@@ -234,7 +262,7 @@ print(reportDir(task))
 
 Restore a task to a different archive:
 
-```{r, reta, eval=FALSE}
+```{r, eval=FALSE}
 setTaskRoot(file.path(tempdir(),"D4TAlink_exampleTo"),dirCreate=TRUE)
 restoreTask(file)
 newtask <- loadTask(project="myProject",
@@ -243,13 +271,13 @@ newtask <- loadTask(project="myProject",
 print(reportDir(newtask))
 ```
 
-## Changing R markdown template ##
+## Changing R markdown and script templates ##
 
-The R markdown template can be set using the function `setTaskRmdTemplate` as follows.  
+The R markdown and script templates can be set using the functions `setTaskRmdTemplate` and `setTaskRscriptTemplate` as follows.  
 
-```{r, srmd, eval=FALSE}
+```{r, eval=FALSE}
 setTaskRmdTemplate("/SOME/WHERE/my.Rmd")
-
+setTaskRscriptTemplate("/SOME/WHERE/my.R")
 ```
 
 The available path generation functions are `pathsDefault`, `pathsGLPG`, and `pathsPMS`.
@@ -258,12 +286,13 @@ Further, the path path th the template can be set in the [`.Renviron`](https://c
 
 ```
 D4TAlink_rmdtempl="/SOME/WHERE/my.Rmd"
+D4TAlink_rscripttempl="/SOME/WHERE/my.R"
 ```
 ## Changing directory structure ##
 
 The directory structure can be customized, by creating a directory using the command `setTaskStructure` as follows.  
 
-```{r, dstr, eval=FALSE}
+```{r, eval=FALSE}
 fun <- function(project,package,taskname,sponsor) {
   basePath <- file.path("%ROOT%",sponsor,project,package)
   paths <- list(

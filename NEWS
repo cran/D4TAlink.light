@@ -1,0 +1,13 @@
+D4TAlink.light v2.1.7
+================
+
+* Modify R markdown templates
+* Adjust dependencies
+* Catch warnings in 'readBinary' and 'saveBinary'
+* Expand vignette
+* Add 'NEWS'
+* Add 'initTaskRscript'
+
+
+
+

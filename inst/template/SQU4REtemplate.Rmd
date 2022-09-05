@@ -5,6 +5,7 @@ author: '%AUTHOR%'
 date: '%DATE%'
 output: 
   officedown::rdocx_document:
+    reference_docx: "%TEMPLATEFILE%"
     toc: yes
   page_size:
     width: 8.3

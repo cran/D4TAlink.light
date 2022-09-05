@@ -84,13 +84,23 @@ setTaskStructure <- function(pathgen){
 #' @export
 getTaskStructure <- function() get(x="pathgen",pos=.pkgEnv)
 
-##### Rmdtemplate #####
+##### RmdTemplate #####
 
 #' Set the path to the Rmd task template.
 #' @param file path to the Rmd task template.
+#' @inheritParams base::readLines
 #' @return The path to the Rmd task template invisibly.
 #' @export
-setTaskRmdTemplate <- function(file){
+setTaskRmdTemplate <- function(file,encoding="unknown"){
+  if(file=="SQU4RE") {
+    f <- system.file("template/SQU4REtemplate.Rmd",package="D4TAlink.light")
+    file.copy(f,rfn<-tempfile(fileext=".Rmd"))
+    dfn <- system.file("template/SQU4REtemplate.docx",package="D4TAlink.light")
+    tin <- readLines(rfn,encoding=encoding,warn=FALSE)
+    tin <- gsub("%TEMPLATEFILE%",dfn,tin,fixed=TRUE)
+    writeLines(enc2utf8(tin),rfn,useBytes=TRUE)
+    file <- rfn
+  }
   assign(x="rmdTempl",value=file,pos=.pkgEnv)
   invisible(getTaskRmdTemplate())
 }
@@ -99,4 +109,20 @@ setTaskRmdTemplate <- function(file){
 #' @return The path to the Rmd task template.
 #' @export
 getTaskRmdTemplate <- function() get(x="rmdTempl",pos=.pkgEnv)
+
+##### RscriptTemplate #####
+
+#' Set the path to the R script task template.
+#' @param file path to the Rmd task template.
+#' @return The path to the Rmd task template invisibly.
+#' @export
+setTaskRscriptTemplate <- function(file){
+  assign(x="rscriptTempl",value=file,pos=.pkgEnv)
+  invisible(getTaskRscriptTemplate())
+}
+
+#' Get the path to the R script task template.
+#' @return The path to the R script task template.
+#' @export
+getTaskRscriptTemplate <- function() get(x="rscriptTempl",pos=.pkgEnv)
 

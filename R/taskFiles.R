@@ -6,7 +6,11 @@
 #' @export
 readBinary <- function(task,type,subdir=NULL,dirCreate=FALSE) {
   fn <- binaryFn(task,type,ext="%e%",subdir=subdir,dirCreate=dirCreate)
-  if(file.exists(gsub("%e%","sq5",fn))) {return(unserialize(openssl::aes_cbc_decrypt(readRDS(gsub("%e%","sq5",fn)),key=openssl::sha256(charToRaw(get(x="sq5key",pos=.pkgEnv))))))
+  if(file.exists(gsub("%e%","sq5",fn))) {
+    owa <- options()$warn
+    options(warn=-1)
+    on.exit(options(warn=owa))
+    return(unserialize(openssl::aes_cbc_decrypt(readRDS(gsub("%e%","sq5",fn)),key=openssl::sha256(charToRaw(get(x="sq5key",pos=.pkgEnv))))))
   } else if(file.exists(gsub("%e%","sq4",fn))) {return(readRDS(gsub("%e%","sq4",fn)))
   } else if(file.exists(gsub("%e%","rds",fn))) {return(readRDS(gsub("%e%","rds",fn)))
   }
@@ -21,7 +25,11 @@ readBinary <- function(task,type,subdir=NULL,dirCreate=FALSE) {
 #' @export
 saveBinary <- function(object,task,type,subdir=NULL,dirCreate=TRUE,encrypt=FALSE) {
   fn <- binaryFn(task,type,ext=ifelse(encrypt,"sq5","rds"),subdir=subdir,dirCreate=dirCreate)
-  if(encrypt) {saveRDS(openssl::aes_cbc_encrypt(serialize(object,NULL),key=openssl::sha256(charToRaw(get(x="sq5key",pos=.pkgEnv)))),fn)
+  if(encrypt) {
+    owa <- options()$warn
+    options(warn=-1)
+    on.exit(options(warn=owa))
+    saveRDS(openssl::aes_cbc_encrypt(serialize(object,NULL),key=openssl::sha256(charToRaw(get(x="sq5key",pos=.pkgEnv)))),fn)
   } else {saveRDS(object,fn)
   }
   invisible(fn)
@@ -33,11 +41,10 @@ saveBinary <- function(object,task,type,subdir=NULL,dirCreate=TRUE,encrypt=FALSE
 #' @param x object to save. It can be either a data frame, an object of type \code{AnnotatedDataFrame}, or a list thereof.
 #' @param metadata prefix for names of worksheets holding metadata.
 #' @param metadata.append array of metadata field names to be appended in header of tables.
+#' @inheritParams D4TAlink-common-args
 #' @inheritParams WriteXLS::WriteXLS
 #' @inheritDotParams WriteXLS::WriteXLS
-#' @inheritParams D4TAlink-common-args
 #' @return the file name invisibly.
-#' @importFrom gdata trim
 #' @importFrom Biobase pData varMetadata
 #' @export
 saveReportXls <- function(x,task,type,ext="xlsx",subdir=NULL,dirCreate=TRUE,
@@ -50,12 +57,13 @@ saveReportXls <- function(x,task,type,ext="xlsx",subdir=NULL,dirCreate=TRUE,
   if(is.null(names(x))) stop("'x' must be a named list");
   for(i in names(x)) if("AnnotatedDataFrame"%in%class(x[[i]])) {
     if(!is.null(x[[paste(i,metadata)]])) stop("meta data exists");
-    m <- varMetadata(x[[i]]);
+    m <- Biobase::varMetadata(x[[i]]);
     d <- x[[i]] <- Biobase::pData(x[[i]]);
     x[[paste(i,metadata)]] <- cbind(data.frame(`field`=rownames(m)),m);
     if(!is.null(metadata.append)) {
       d <- as.data.frame(rbind(colnames(d),
-                               apply(d,2,function(x)gdata::trim(as.character(x)))))
+       apply(d,2,function(x)gsub("(^[[:space:]]*)|([[:space:]]*$)","",
+                                 as.character(x)))))
       for(f in metadata.append)
         d <- as.data.frame(rbind(m[colnames(d),f],d))
       colnames(d) <- NULL;
@@ -67,18 +75,17 @@ saveReportXls <- function(x,task,type,ext="xlsx",subdir=NULL,dirCreate=TRUE,
     for(i in names(x)) if(!is.null(colnames(x[[i]]))) {
       d <- x[[i]]
       d <- as.data.frame(rbind(colnames(d),apply(d,2,
-        function(x)gdata::trim(as.character(x)))))
+        function(x)gsub("(^[[:space:]]*)|([[:space:]]*$)","",as.character(x)))))
       colnames(d) <- NULL;
       x[[i]] <- d;
     }
   }
   fn<-reportFn(task,type,ext=ext,subdir=subdir,dirCreate=dirCreate);
-  #if(requireNamespace("WriteXLS",quietly=1)) { # WriteXLS
-  #  with(x,WriteXLS::WriteXLS(names(x),ExcelFileName=fn,
-  #                col.names=is.null(metadata.append),
-  #                AdjWidth=AdjWidth,FreezeRow=FreezeRow,FreezeCol=FreezeCol,...));
-  #} else
-  if(requireNamespace("openxlsx",quietly=1)) { # openxlsx
+  if(requireNamespace("WriteXLS",quietly=1)) { # WriteXLS
+    with(x,WriteXLS::WriteXLS(names(x),ExcelFileName=fn,
+                  col.names=is.null(metadata.append),
+                  AdjWidth=AdjWidth,FreezeRow=FreezeRow,FreezeCol=FreezeCol,...));
+  } else if(requireNamespace("openxlsx",quietly=1)) { # openxlsx
     for(i in 1:length(x)) {
       if(is.null(colnames(x[[i]]))) {
         v <- unlist(x[[i]][1,]) ; v[is.na(v)] <- "-"
@@ -87,12 +94,6 @@ saveReportXls <- function(x,task,type,ext="xlsx",subdir=NULL,dirCreate=TRUE,
       }
     }
     openxlsx::write.xlsx(x,fn);
-  } else if(requireNamespace("xlsx",quietly=1)) { # xlsx
-    a <- FALSE
-    for(n in names(x)) {
-      xlsx::write.xlsx(x[[n]],file=fn,sheetName=n,
-                       row.names=FALSE,col.names=is.null(metadata.append),showNA=FALSE,append=a)
-    }
   } else if(requireNamespace("XLConnect",quietly=1)) { # XLConnect
     wb <- XLConnect::loadWorkbook(fn,create=TRUE)
     for(n in names(x)) {
@@ -100,6 +101,12 @@ saveReportXls <- function(x,task,type,ext="xlsx",subdir=NULL,dirCreate=TRUE,
       XLConnect::writeWorksheet(wb,x[[n]],sheet=n,header=is.null(metadata.append),rownames=NULL)
     }
     XLConnect::saveWorkbook(wb)
+  } else if(requireNamespace("xlsx",quietly=1)) { # xlsx
+    a <- FALSE
+    for(n in names(x)) {
+      xlsx::write.xlsx(x[[n]],file=fn,sheetName=n,
+                       row.names=FALSE,col.names=is.null(metadata.append),showNA=FALSE,append=a)
+    }
   } else stop("no package installed to save Excel file")
   invisible(fn)
 };

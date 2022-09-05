@@ -19,6 +19,9 @@ initTaskRmd <- function(task,encoding="unknown",overwrite=FALSE) {
     tin <- gsub(sprintf("%%%s%%",toupper(n)),u[[n]],tin,fixed=TRUE)
     tin <- gsub(sprintf("%%%sX%%",toupper(n)),fo(u[[n]]),tin,fixed=TRUE)
   }
+  for(e in names(task)[sapply(task,is.character)])
+    tin <- gsub(paste0("%",toupper(e),"%"),task[[e]],tin,fixed=TRUE)
+  tin <- gsub(paste0("%","TYPE","%"),"task report",tin,fixed=TRUE)
   writeLines(enc2utf8(tin),fn,useBytes=TRUE)
   invisible(fn)
 }
@@ -36,7 +39,9 @@ initTaskRmd <- function(task,encoding="unknown",overwrite=FALSE) {
 #' @export
 renderTaskRmd <- function(task,output_format=NULL,debug=FALSE,clean=TRUE,...){
   ifn <- file.path(getTaskPaths(task)[["code"]],paste0(task$task,".Rmd"))
-  odr <- file.path(getTaskPaths(task)[["doc"]])
+  if(!file.exists(ifn)) ifn <- file.path(getTaskPaths(task)[["code"]],paste0(task$task,".rmd"))
+  if(!file.exists(ifn)) stop("R markdown file not found, create it using 'initTaskRmd'.")
+  odr <- getTaskPaths(task)[["doc"]]
   if(debug) fn <- rmarkdown::render(input=ifn,output_dir=odr,
                                     output_format=output_format,clean=clean,...,
                                     envir=globalenv())
@@ -48,5 +53,48 @@ renderTaskRmd <- function(task,output_format=NULL,debug=FALSE,clean=TRUE,...){
     file.copy(from=tfn,to=odr)
     file.remove(tfn)
   }
+  if(grepl("docx$",fn)) formatTaskDocx(task)
   invisible(fn)
 }
+
+#' Replace default task fields in 'docx' file.
+#' @inheritParams D4TAlink-common-args
+#' @importFrom utils zip
+#' @return the file name invisibly.
+formatTaskDocx <- function(task) {
+  ifn <- file.path(getTaskPaths(task)[["doc"]],paste0(task$task,".docx"))
+  if(!file.exists(ifn)) stop("No word documentation found. Create it using 'renderTaskRmd'.")
+  tloc <- tempfile() # paste0(ifn,".xct")
+  unlink(tloc,recursive=TRUE)
+  dir.create(tloc,showWarnings=FALSE)
+  unzip(ifn,exdir=tloc)
+  owd <- getwd()
+  setwd(tloc)
+  on.exit(setwd(owd))
+  for(f in list.files(".","[.]xml$",recursive=TRUE,full.names=TRUE)) {
+    s <- readChar(f,file.info(f)$size)
+    sa <- FALSE
+    for(e in names(task)[sapply(task,is.character)]) {
+      if(grepl(paste0("%",toupper(e),"%"),s,fixed=TRUE)) {
+        sa <- TRUE
+        s <- gsub(paste0("%",toupper(e),"%"),task[[e]],s,fixed=TRUE)
+      }
+    }
+    if(grepl('%TYPE%',s,fixed=TRUE)) {
+      sa <- TRUE
+      s <- gsub('%TYPE%','task report',s,fixed=TRUE)
+    }
+    if(sa) {
+      print(f)
+      cat(s,file=f)
+      zip(ifn,f,flags="")
+    }
+  }
+  unlink(tloc,recursive=TRUE)
+  invisible(ifn)
+}
+
+
+
+
+

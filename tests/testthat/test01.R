@@ -2,7 +2,7 @@ test_that("typical workflow",{
   library(D4TAlink.light)
   ## ----------------------------
   setTaskRoot(tempfile(),dirCreate=TRUE)
-  setTaskRoot("~/dtest1",dirCreate=TRUE)
+  #setTaskRoot("~/dtest1",dirCreate=TRUE)
   setTaskAuthor("Doe Johns")
   setTaskSponsor("MySponsor")
   setTaskStructure(pathsDefault)
@@ -23,7 +23,14 @@ test_that("typical workflow",{
   e <- readBinary(task,"data")
   if(!all(names(e)%in%names(d))) stop("error [1]")
   ## ----------------------------
-  initTaskRmd(task)
+  file <- initTaskRscript(task,overwrite=TRUE)
+  ## ----------------------------
+  initTaskRmd(task,overwrite=TRUE)
+  file <- renderTaskRmd(task) # requires having run 'tinytex::install_tinytex()'
+  if(FALSE) openPDF(file)
+  ## ----------------------------
+  setTaskRmdTemplate("SQU4RE")
+  initTaskRmd(task,overwrite=TRUE)
   file <- renderTaskRmd(task) # requires having run 'tinytex::install_tinytex()'
   if(FALSE) openPDF(file)
   ## ----------------------------
@@ -39,7 +46,7 @@ test_that("typical workflow",{
   unlink(getTaskRoot(),recursive=TRUE)
   ## ----------------------------
   setTaskRoot(tempfile(),dirCreate=TRUE)
-  setTaskRoot("~/dtest2",dirCreate=TRUE)
+  #setTaskRoot("~/dtest2",dirCreate=TRUE)
   l <- restoreTask(file)
   print(list.files(getTaskRoot(),recursive=TRUE,full.names=TRUE))
   unlink(getTaskRoot(),recursive=TRUE)

@@ -214,6 +214,25 @@ structuring of R&amp;D activities in compliance with FAIR and ALCOA principles. 
 <li>ALCOA principles: Food &amp; Drug Administration, 2018 (<a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/data-integrity-and-compliance-drug-cgmp-questions-and-answers-guidance-industry">Data Integrity and Compliance With Drug CGMP - Questions and Answers Guidance for Industry</a>).</li>
 </ol>
 
+<h1>Instalation</h1>
+
+<p>Install from <a href="https://CRAN.R-project.org/package=D4TAlink.light">CRAN</a>: </p>
+
+<pre><code class="r">install.packages(&quot;D4TAlink.light&quot;)
+</code></pre>
+
+<p>Install latest version from <a href="https://bitbucket.org/SQ4/d4talink.light">Bitbucket</a>:</p>
+
+<pre><code class="r">devtools::install_bitbucket(&quot;SQ4/d4talink.light&quot;,subdir=&quot;D4TAlink.light&quot;)
+</code></pre>
+
+<p>Note that you may need to install: </p>
+
+<ul>
+<li>the Bioconductor package <code>Biobase</code>  (<a href="https://bioconductor.org/install/">instructions</a>), and</li>
+<li>Rtools (<a href="https://cran.r-project.org/bin/windows/">cran.r-project.org/bin/windows</a>).</li>
+</ul>
+
 <h1>Tutorial</h1>
 
 <h2>Setting base parameters</h2>
@@ -246,6 +265,7 @@ file located in the system home directory.</p>
 D4TAlink_sponsor=&quot;CompanyA&quot;
 D4TAlink_root=&quot;/SOME/WHERE/D4TAlink_example001&quot;
 D4TAlink_rmdtempl=&quot;/SOME/WHERE/my.Rmd&quot;
+D4TAlink_rscripttempl=&quot;/SOME/WHERE/my.R&quot;
 D4TAlink_pathgen=&quot;pathsDefault&quot;
 </code></pre>
 
@@ -375,7 +395,7 @@ print(file)
 e &lt;- readBinary(loadTask(task$project,task$package,&quot;20220801_parentTask&quot;),&quot;someData&quot;)
 </code></pre>
 
-<h2>Task documentation</h2>
+<h2>Create and render task documentation</h2>
 
 <p>Documentation of a task is typically authored using 
 <a href="https://rmarkdown.rstudio.com/">R markdown</a> files (Rmd). D4TAlink advises to have one 
@@ -391,6 +411,14 @@ print(file)
 
 <pre><code class="r">file &lt;- renderTaskRmd(task) # may require having run &#39;tinytex::install_tinytex()&#39;
 openPDF(file)
+</code></pre>
+
+<h2>Create a task R script</h2>
+
+<p>For some task an R script may also be needed. The task script can be created from the default template: </p>
+
+<pre><code class="r">file &lt;- initTaskRscript(task)
+print(file)
 </code></pre>
 
 <h2>Task archiving</h2>
@@ -419,12 +447,12 @@ newtask &lt;- loadTask(project=&quot;myProject&quot;,
 print(reportDir(newtask))
 </code></pre>
 
-<h2>Changing R markdown template</h2>
+<h2>Changing R markdown and script templates</h2>
 
-<p>The R markdown template can be set using the function <code>setTaskRmdTemplate</code> as follows.  </p>
+<p>The R markdown and script templates can be set using the functions <code>setTaskRmdTemplate</code> and <code>setTaskRscriptTemplate</code> as follows.  </p>
 
 <pre><code class="r">setTaskRmdTemplate(&quot;/SOME/WHERE/my.Rmd&quot;)
-
+setTaskRscriptTemplate(&quot;/SOME/WHERE/my.R&quot;)
 </code></pre>
 
 <p>The available path generation functions are <code>pathsDefault</code>, <code>pathsGLPG</code>, and <code>pathsPMS</code>.</p>
@@ -432,6 +460,7 @@ print(reportDir(newtask))
 <p>Further, the path path th the template can be set in the <a href="https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Invoking-R"><code>.Renviron</code></a> file:</p>
 
 <pre><code>D4TAlink_rmdtempl=&quot;/SOME/WHERE/my.Rmd&quot;
+D4TAlink_rscripttempl=&quot;/SOME/WHERE/my.R&quot;
 </code></pre>
 
 <h2>Changing directory structure</h2>
