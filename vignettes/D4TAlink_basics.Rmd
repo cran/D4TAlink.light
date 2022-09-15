@@ -28,7 +28,7 @@ structuring of R&D activities in compliance with FAIR and ALCOA principles.
 1. FAIR principles: Jacobsen et al., 2017 ([doi:10.1162/dint_r_00024](https://doi.org/10.1162/dint_r_00024))
 2. ALCOA principles: Food & Drug Administration, 2018 ([Data Integrity and Compliance With Drug CGMP - Questions and Answers Guidance for Industry](<https://www.fda.gov/regulatory-information/search-fda-guidance-documents/data-integrity-and-compliance-drug-cgmp-questions-and-answers-guidance-industry>)).
 
-# Instalation #
+# Installation #
 
 Install from [CRAN](https://CRAN.R-project.org/package=D4TAlink.light): 
 
@@ -138,6 +138,18 @@ For traceability, the files within a task have specifically the format `[TASK_NA
 describing the content of the file, and `EXTENSION` the file tyle (e.g., `pdf` or 
 `xlsx`). By convention `TASK_NAME` has a date as prefix with format `%Y%m%d_`, 
 and `DATA_TYPE` does not contain underscores or dots, `_` or `.`.
+
+The function `listTaskFiles` returns a list of files associated with a task: 
+
+```{r, eval=FALSE}
+listTaskFiles(task)
+```
+
+Similarly, the function `listTasks` returns a list of all tasks in the repository: 
+
+```{r, eval=FALSE}
+listTasks()
+```
 
 ## Reporting graphics in a task ##
 

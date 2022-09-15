@@ -4,14 +4,12 @@
 \alias{datasourceFn}
 \title{Get path of data source file.}
 \usage{
-datasourceFn(task, type, ext, subdir = NULL, dirCreate = TRUE)
+datasourceFn(task, filename, subdir = ".", dirCreate = TRUE)
 }
 \arguments{
 \item{task}{Object of class \code{\link{D4TAlinkTask}}, as created by \code{\link{initTask}}.}
 
-\item{type}{Filename type. If the type is an array, the cocatenation of the elements is used with separator"-". Filenames have the form [task name]_[type].[ext]}
-
-\item{ext}{Filename extension.}
+\item{filename}{name of the input file.}
 
 \item{subdir}{(optional) Subdirectory.}
 

@@ -1,37 +1,42 @@
 ## =======================================================================
 #' Restore R object from binary file.
+#' @param quiet issue warning if file does not exists.
 #' @inheritParams D4TAlink-common-args
+#' @inheritParams getTaskEnckey
 #' @return Object stored in binary file, or \code{NULL} if file does not exist.
 #' @importFrom openssl aes_cbc_decrypt sha256
 #' @export
-readBinary <- function(task,type,subdir=NULL,dirCreate=FALSE) {
+readBinary <- function(task,type,subdir=NULL,dirCreate=FALSE,ask=FALSE,quiet=FALSE) {
   fn <- binaryFn(task,type,ext="%e%",subdir=subdir,dirCreate=dirCreate)
+  res <- NULL
   if(file.exists(gsub("%e%","sq5",fn))) {
-    owa <- options()$warn
-    options(warn=-1)
-    on.exit(options(warn=owa))
-    return(unserialize(openssl::aes_cbc_decrypt(readRDS(gsub("%e%","sq5",fn)),key=openssl::sha256(charToRaw(get(x="sq5key",pos=.pkgEnv))))))
-  } else if(file.exists(gsub("%e%","sq4",fn))) {return(readRDS(gsub("%e%","sq4",fn)))
-  } else if(file.exists(gsub("%e%","rds",fn))) {return(readRDS(gsub("%e%","rds",fn)))
+    key <- getTaskEnckey(ask=ask)
+    res <- unserialize(openssl::aes_cbc_decrypt(readRDS(gsub("%e%","sq5",fn)),key=openssl::sha256(charToRaw(key))))
+  } else if(file.exists(gsub("%e%","sq4",fn))) {
+    res <- readRDS(gsub("%e%","sq4",fn))
+  } else if(file.exists(gsub("%e%","rds",fn))) {
+    res <- readRDS(gsub("%e%","rds",fn))
   }
-  NULL
+  if(is.null(res)&&!quiet) {
+    warning(paste0("object '",type,"' not found"))
+  }
+  res
 }
+
 #' Save R object in binary file.
 #' @param object R object to serialize.
 #' @param encrypt encrypt the output, default: FALSE.
 #' @inheritParams D4TAlink-common-args
+#' @inheritParams getTaskEnckey
 #' @return the file name invisibly.
 #' @importFrom openssl aes_cbc_encrypt sha256
 #' @export
-saveBinary <- function(object,task,type,subdir=NULL,dirCreate=TRUE,encrypt=FALSE) {
+saveBinary <- function(object,task,type,subdir=NULL,dirCreate=TRUE,encrypt=FALSE,ask=FALSE) {
   fn <- binaryFn(task,type,ext=ifelse(encrypt,"sq5","rds"),subdir=subdir,dirCreate=dirCreate)
   if(encrypt) {
-    owa <- options()$warn
-    options(warn=-1)
-    on.exit(options(warn=owa))
-    saveRDS(openssl::aes_cbc_encrypt(serialize(object,NULL),key=openssl::sha256(charToRaw(get(x="sq5key",pos=.pkgEnv)))),fn)
-  } else {saveRDS(object,fn)
-  }
+    key <- getTaskEnckey(ask=ask)
+    saveRDS(openssl::aes_cbc_encrypt(serialize(object,NULL),key=openssl::sha256(charToRaw(key))),fn)
+  } else saveRDS(object,fn)
   invisible(fn)
 }
 ## =======================================================================
@@ -45,8 +50,8 @@ saveBinary <- function(object,task,type,subdir=NULL,dirCreate=TRUE,encrypt=FALSE
 #' @inheritParams WriteXLS::WriteXLS
 #' @inheritDotParams WriteXLS::WriteXLS
 #' @return the file name invisibly.
-#' @importFrom Biobase pData varMetadata
 #' @export
+# #' @importFrom Biobase pData varMetadata
 saveReportXls <- function(x,task,type,ext="xlsx",subdir=NULL,dirCreate=TRUE,
                           AdjWidth=TRUE,FreezeRow=1,FreezeCol=3,
                           metadata="metadata",
@@ -81,11 +86,7 @@ saveReportXls <- function(x,task,type,ext="xlsx",subdir=NULL,dirCreate=TRUE,
     }
   }
   fn<-reportFn(task,type,ext=ext,subdir=subdir,dirCreate=dirCreate);
-  if(requireNamespace("WriteXLS",quietly=1)) { # WriteXLS
-    with(x,WriteXLS::WriteXLS(names(x),ExcelFileName=fn,
-                  col.names=is.null(metadata.append),
-                  AdjWidth=AdjWidth,FreezeRow=FreezeRow,FreezeCol=FreezeCol,...));
-  } else if(requireNamespace("openxlsx",quietly=1)) { # openxlsx
+  if(requireNamespace("openxlsx",quietly=1)) { # openxlsx
     for(i in 1:length(x)) {
       if(is.null(colnames(x[[i]]))) {
         v <- unlist(x[[i]][1,]) ; v[is.na(v)] <- "-"
@@ -94,6 +95,10 @@ saveReportXls <- function(x,task,type,ext="xlsx",subdir=NULL,dirCreate=TRUE,
       }
     }
     openxlsx::write.xlsx(x,fn);
+  } else if(requireNamespace("WriteXLS",quietly=1)) { # WriteXLS
+    with(x,WriteXLS::WriteXLS(names(x),ExcelFileName=fn,
+                              col.names=is.null(metadata.append),
+                              AdjWidth=AdjWidth,FreezeRow=FreezeRow,FreezeCol=FreezeCol,...));
   } else if(requireNamespace("XLConnect",quietly=1)) { # XLConnect
     wb <- XLConnect::loadWorkbook(fn,create=TRUE)
     for(n in names(x)) {
@@ -153,7 +158,7 @@ scanReport <- function(task,type,ext="txt",subdir=NULL,dirCreate=TRUE,what="",..
 #' @importFrom utils write.csv
 #' @export
 saveReportTable <- function(x,task,type,ext="csv",subdir=NULL,dirCreate=TRUE,gzip=FALSE,...)  {
-  if("AnnotatedDataFrame"%in%class(x)) x <- pData(x)
+  if("AnnotatedDataFrame"%in%class(x)) x <- Biobase::pData(x)
   write.csv(x,fn<-reportFn(task,type,ext=sprintf(ifelse(gzip,"%s.gz","%s"),ext),
                            subdir=subdir,dirCreate=dirCreate),...)#gzip=gzip,
   invisible(fn)

@@ -9,7 +9,8 @@ loadTask(
   package,
   taskname,
   sponsor = getTaskSponsor(),
-  author = getTaskAuthor()
+  author = getTaskAuthor(),
+  quiet = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ loadTask(
 \item{sponsor}{Sponsor name, default set by \code{\link{setTaskSponsor}}.}
 
 \item{author}{Author name, system username by default.}
+
+\item{quiet}{issue warning if file does not exists.}
 }
 \value{
 Object of class \code{\link{D4TAlinkTask}} or NULL if the \code{task} does not exists.

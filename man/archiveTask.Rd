@@ -4,12 +4,14 @@
 \alias{archiveTask}
 \title{Create an archive containing the files of a given task.}
 \usage{
-archiveTask(task, file, ...)
+archiveTask(task, file, overwrite = FALSE, ...)
 }
 \arguments{
 \item{task}{Object of class \code{\link{D4TAlinkTask}}, as created by \code{\link{initTask}}.}
 
 \item{file}{full name of the output zip file}
+
+\item{overwrite}{overwrite the output zip file is it exists}
 
 \item{...}{
   Arguments passed on to \code{\link[utils:zip]{utils::zip}}

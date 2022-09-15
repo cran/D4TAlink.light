@@ -64,7 +64,7 @@ pathsGLPG <- function(project,package,taskname,sponsor) {
 #' @return a list of file paths
 #' @export
 pathsPMS <- function(project,package,taskname,sponsor) {
-  basePath <- file.path("%ROOT%",sponsor,"%TYPE%",project,package)
+  basePath <- file.path("%ROOT%","%TYPE%",project,package)
   paths <- list(
     root = "%ROOT%",
     datasrc = file.path(gsub("%TYPE%","PMS_data",basePath),"data_source"),

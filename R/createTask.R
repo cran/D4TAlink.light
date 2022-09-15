@@ -2,6 +2,7 @@
 #' Create a task.
 #' @inheritParams D4TAlink-common-args
 #' @return An \code{\link{D4TAlinkTask}} object
+#' @keywords internal
 createTask <- function(project, package, taskname,
                        sponsor= getTaskSponsor(),
                        author = getTaskAuthor()) {

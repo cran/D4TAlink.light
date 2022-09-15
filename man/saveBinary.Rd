@@ -10,7 +10,8 @@ saveBinary(
   type,
   subdir = NULL,
   dirCreate = TRUE,
-  encrypt = FALSE
+  encrypt = FALSE,
+  ask = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ saveBinary(
 \item{dirCreate}{Logical, if TRUE (by default) the directory is created.}
 
 \item{encrypt}{encrypt the output, default: FALSE.}
+
+\item{ask}{query encryption key from user, default FALSE.}
 }
 \value{
 the file name invisibly.

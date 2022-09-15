@@ -2,7 +2,7 @@
 % Please edit documentation in R/taskArchive.R
 \name{restoreTask}
 \alias{restoreTask}
-\title{Restore an archive containing the files of a given task.}
+\title{Restore an archive containing the files of a given task from a file created with archiveTask.}
 \usage{
 restoreTask(file, overwrite = FALSE, list = FALSE, ...)
 }
@@ -36,8 +36,8 @@ restoreTask(file, overwrite = FALSE, list = FALSE, ...)
   }}
 }
 \value{
-if list FALSE, the task imported, otherwise the list .
+if list FALSE, the task imported incisibly, otherwise the list of files in the archive.
 }
 \description{
-Restore an archive containing the files of a given task.
+Restore an archive containing the files of a given task from a file created with archiveTask.
 }

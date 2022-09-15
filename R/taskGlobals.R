@@ -7,7 +7,7 @@ setTaskRoot <- function(rootpath,dirCreate=FALSE){
   if(!dirCreate&&!file.exists(rootpath)) stop("root directory does not exist")
   if( dirCreate&&!file.exists(rootpath)) dir.create(rootpath,recursive=TRUE,showWarnings=FALSE)
   assign(x="rootpath",value=rootpath,pos=.pkgEnv)
-  getTaskRoot()
+  invisible(getTaskRoot())
 }
 
 #' Get the root of the task repository.
@@ -26,7 +26,7 @@ getTaskRoot <- function() get(x="rootpath",pos=.pkgEnv)
 #' @export
 setTaskAuthor <- function(author){
   assign(x="authorname",value=author,pos=.pkgEnv)
-  getTaskAuthor()
+  invisible(getTaskAuthor())
 }
 
 #' Get the name of the task author.
@@ -45,7 +45,7 @@ getTaskAuthor <- function() get(x="authorname",pos=.pkgEnv)
 #' @export
 setTaskSponsor <- function(sponsor){
   assign(x="sponsorname",value=sponsor,pos=.pkgEnv)
-  getTaskSponsor()
+  invisible(getTaskSponsor())
 }
 
 #' Get the name of the task sponsor.
@@ -125,4 +125,37 @@ setTaskRscriptTemplate <- function(file){
 #' @return The path to the R script task template.
 #' @export
 getTaskRscriptTemplate <- function() get(x="rscriptTempl",pos=.pkgEnv)
+
+
+##### EncryptionKey #####
+
+#' Set the encryption key for binary data files.
+#' @param key encryption key, if NULL then query key from user.
+#' @return \code{NULL} invisibly.
+#' @export
+setTaskEnckey <- function(key){
+  assign(x="sq5key",value=key,pos=.pkgEnv)
+  invisible(NULL)
+}
+
+#' Get the encryption key for binary data files.
+#' @param ask query encryption key from user, default FALSE.
+#' @return The encryption key invisibly.
+#' @export
+getTaskEnckey <- function(ask=FALSE) {
+  key <- NULL
+  if(!exists("sq5key",envir=.pkgEnv)||ask) {
+    if(requireNamespace("getPass",quietly=1)) {
+      key <- getPass::getPass("encryption key")
+    } else if(system("where stty")<1) {
+      cat("encryption key:\n")
+      system("stty -echo")
+      key <- readline()
+      system("stty echo")
+      cat("\r \r")
+    } else stop("package 'getPass' required to encrypt files, please install it")
+  } else key <- get(x="sq5key",pos=.pkgEnv)
+  if(nchar(key)<8) stop("encryption key must have at least eight characters")
+  invisible(key)
+}
 

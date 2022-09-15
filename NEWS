@@ -1,3 +1,14 @@
+D4TAlink.light v2.1.8
+================
+
+* Add function 'listTasks' to list all tasks present in a repository².
+* Add function 'listTaskFiles' to list all files associated with a task.
+* Add functions 'setTaskEnckey' and 'getTaskEnckey' to define the ecryption kek for binary files (see 'saveBinary' and 'readBinary')
+* Enable restoring a task in a file structure different to the originating structure (functions 'archiveTask' and 'restoreTask')
+* Remove dependency to Biobase
+* AES-256 encryption of binary files: 'saveBinary(..., encrypt=TRUE)' and 'readBinary(...)'
+* Issue warning if file not found when loading/reading task or binary file.
+
 D4TAlink.light v2.1.7
 ================
 
@@ -7,7 +18,5 @@ D4TAlink.light v2.1.7
 * Expand vignette
 * Add 'NEWS'
 * Add 'initTaskRscript'
-
-
-
+* Add a JSON file storing task parameters in tasks' 'bin' directory
 

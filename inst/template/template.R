@@ -1,9 +1,15 @@
 library(D4TAlink.light)
-task <- initTask(project="%PROJECT%",
-                 package="%PACKAGE%",
-                 taskname="%TASK%",
-                 sponsor="%SPONSOR%",
-                 author="%AUTHOR%")
+
+# Load task
+task <- loadTask(project="%PROJECT%", package="%PACKAGE%", taskname="%TASK%")
+# if task does not exist on repository, create it
+if(is.null(task)) {
+  task <- initTask(project="%PROJECT%",
+                   package="%PACKAGE%",
+                   taskname="%TASK%",
+                   sponsor="%SPONSOR%",
+                   author="%AUTHOR%")
+}
 
 # Load dependencies
 library(stats)

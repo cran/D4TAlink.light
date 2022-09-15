@@ -32,6 +32,33 @@ classoption: twoside
 geometry: 'left=2cm,right=2cm,top=3cm,bottom=2cm'
 ---
 
+```{r eval=FALSE, echo=FALSE}
+# ===================== HELPER CODE ==========================
+{
+  # load the task
+  task <- loadTask(project="%PROJECT%", package="%PACKAGE%", taskname="%TASK%")
+  
+  # render the task
+  renderTaskRmd(task) 
+  
+  # archive the task to the home directory
+  archiveTask(task,zf<-paste0("~/",task$task,".zip"),overwrite=FALSE)
+  
+  # settings for new repository
+  oro <- getTaskRoot() 
+  setTaskRoot("/PATH/TO/NEW/REPOSITORY")
+
+  # copy the task to a new repository and list data files
+  newtask <- restoreTask(zf)
+  print(list.files(getTaskPaths(newtask)$data,
+                   full.names=FALSE,recursive=TRUE))
+  
+  #restore old settings
+  setTaskRoot(oro) 
+}
+# ============================================================
+```
+
 ```{r optionsChunk, echo=FALSE, message=FALSE, warning=FALSE}
 library(knitr)
 opts_chunk$set(
@@ -42,19 +69,26 @@ opts_chunk$set(
 	dpi = 150
 )
 library(officedown)
-
-options(warn = 1)
-library(D4TAlink.light)
-task <- initTask(project="%PROJECT%",
-                 package="%PACKAGE%",
-                 taskname="%TASK%",
-                 sponsor="%SPONSOR%",
-                 author="%AUTHOR%")
 ```
 
-```{r loadLibraries, echo=FALSE}
-# Load dependencies
-library(stats)
+```{r loadLibraries, echo=FALSE, message=FALSE, warning=FALSE}
+# Load libraries
+library(D4TAlink.light)
+```
+
+```{r loadTask, echo=FALSE}
+# Load task
+task <- loadTask(project="%PROJECT%", package="%PACKAGE%", taskname="%TASK%",quiet=TRUE)
+# if task does not exist on repository, create it 
+if(is.null(task)) {
+  task <- initTask(project="%PROJECT%",
+                   package="%PACKAGE%",
+                   taskname="%TASK%",
+                   sponsor="%SPONSOR%",
+                   author="%AUTHOR%")
+}
+
+options(warn = 2)
 ```
 
 \newpage

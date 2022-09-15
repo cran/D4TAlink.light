@@ -214,7 +214,7 @@ structuring of R&amp;D activities in compliance with FAIR and ALCOA principles. 
 <li>ALCOA principles: Food &amp; Drug Administration, 2018 (<a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/data-integrity-and-compliance-drug-cgmp-questions-and-answers-guidance-industry">Data Integrity and Compliance With Drug CGMP - Questions and Answers Guidance for Industry</a>).</li>
 </ol>
 
-<h1>Instalation</h1>
+<h1>Installation</h1>
 
 <p>Install from <a href="https://CRAN.R-project.org/package=D4TAlink.light">CRAN</a>: </p>
 
@@ -323,6 +323,16 @@ data: </p>
 describing the content of the file, and <code>EXTENSION</code> the file tyle (e.g., <code>pdf</code> or 
 <code>xlsx</code>). By convention <code>TASK_NAME</code> has a date as prefix with format <code>%Y%m%d_</code>, 
 and <code>DATA_TYPE</code> does not contain underscores or dots, <code>_</code> or <code>.</code>.</p>
+
+<p>The function <code>listTaskFiles</code> returns a list of files associated with a task: </p>
+
+<pre><code class="r">listTaskFiles(task)
+</code></pre>
+
+<p>Similarly, the function <code>listTasks</code> returns a list of all tasks in the repository: </p>
+
+<pre><code class="r">listTasks()
+</code></pre>
 
 <h2>Reporting graphics in a task</h2>
 

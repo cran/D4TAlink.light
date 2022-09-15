@@ -102,16 +102,25 @@ binaryDir <- function(task,subdir=NULL,dirCreate=TRUE)
 ## =======================================================================
 #' Get path of data source file.
 #' @inheritParams D4TAlink-common-args
+#' @param filename name of the input file.
 #' @return File path.
 #' @export
-datasourceFn <- function(task,type,ext,subdir=NULL,dirCreate=TRUE)
-  getTaskFilepath(task,type,ext,subdir=subdir,dirCreate=dirCreate,dirtype="datasrc")
+datasourceFn <- function (task, filename, subdir = ".", dirCreate = TRUE) {
+  if (is.null(subdir)) {
+    te <- file.path(getTaskPaths(task)$datasrc, filename)
+  } else {
+    te <- file.path(getTaskPaths(task)$datasrc, subdir, filename)
+  }
+  if (dirCreate && !file.exists(dirname(te)))
+    dir.create(dirname(te), showWarnings = FALSE, recursive = TRUE)
+  te
+}
 #' Get path of data source directory.
 #' @inheritParams D4TAlink-common-args
 #' @return File path.
 #' @export
 datasourceDir <- function(task,subdir=NULL,dirCreate=TRUE)
-  dirname(datasourceFn(task,type="NO",ext="NO",subdir=subdir,dirCreate=dirCreate))
+  dirname(datasourceFn(task,"NOFILE",subdir=subdir,dirCreate=dirCreate))
 
 ## =======================================================================
 

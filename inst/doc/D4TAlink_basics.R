@@ -33,6 +33,12 @@ knitr::opts_chunk$set(
 #                   taskname=sprintf("%s_myTask",format(Sys.time(),"%Y%m%d")))
 
 ## ---- eval=FALSE--------------------------------------------------------------
+#  listTaskFiles(task)
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  listTasks()
+
+## ---- eval=FALSE--------------------------------------------------------------
 #  file <- pdfReport(task,c("plots",1),dim=c(100,100))
 #  hist(rnorm(100))
 #  dev.off()

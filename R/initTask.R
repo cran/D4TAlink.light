@@ -11,7 +11,8 @@
 #' to load packages for your analysis
 #' before initializing the task.
 #' @inheritParams createTask
-#' @param dirCreate Logical, if TRUE (by default) the directory structure for the task is created in the repository.
+#' @param dirCreate logical, if TRUE (by default) the directory structure for the task is created in the repository.
+#' @param overwrite logical, if TRUE and the task already exists, overwrite its parameters.
 #' @param templateCreate create the prefilled Rmd template for the task, default value: FALSE.
 #' @return \code{\link{D4TAlinkTask}} object
 #' @importFrom utils packageVersion
@@ -19,9 +20,10 @@
 initTask <- function(project, package, taskname,
                      sponsor=getTaskSponsor(),
                      author=getTaskAuthor(),
-                     dirCreate=TRUE,templateCreate=FALSE) {
-  task <- loadTask(project,package,taskname,sponsor,author)
-  if(is.null(task)) task <- createTask(project,package,taskname,sponsor,author)
+                     dirCreate=TRUE,templateCreate=FALSE,
+                     overwrite=FALSE) {
+  task <- loadTask(project,package,taskname,sponsor,author,quiet=TRUE)
+  if(overwrite||is.null(task)) task <- createTask(project,package,taskname,sponsor,author)
   if(dirCreate | templateCreate){
     for(path in getTaskPaths(task)) if(!dir.exists(path)){
       dir.create(path,showWarnings=FALSE,recursive=TRUE)

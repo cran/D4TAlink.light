@@ -22,6 +22,8 @@
   if(nchar(v<-Sys.getenv("D4TAlink_rscripttempl"))) setTaskRscriptTemplate(v)
   else setTaskRscriptTemplate(system.file("template/template.R",package="D4TAlink.light"))
 
+  if(nchar(v<-Sys.getenv("D4TAlink_sq5key"))) setTaskEnckey(v)
+
   #packageStartupMessage(sprintf("--- D4TAlink\n    author : %s\n    sponsor: %s\n    root   : %s\n ---",
   #                getTaskAuthor(),getTaskSponsor(),getTaskRoot()))
 }

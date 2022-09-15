@@ -11,7 +11,8 @@ initTask(
   sponsor = getTaskSponsor(),
   author = getTaskAuthor(),
   dirCreate = TRUE,
-  templateCreate = FALSE
+  templateCreate = FALSE,
+  overwrite = FALSE
 )
 }
 \arguments{
@@ -25,9 +26,11 @@ initTask(
 
 \item{author}{Author name, system username by default.}
 
-\item{dirCreate}{Logical, if TRUE (by default) the directory structure for the task is created in the repository.}
+\item{dirCreate}{logical, if TRUE (by default) the directory structure for the task is created in the repository.}
 
 \item{templateCreate}{create the prefilled Rmd template for the task, default value: FALSE.}
+
+\item{overwrite}{logical, if TRUE and the task already exists, overwrite its parameters.}
 }
 \value{
 \code{\link{D4TAlinkTask}} object

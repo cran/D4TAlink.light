@@ -4,7 +4,14 @@
 \alias{readBinary}
 \title{Restore R object from binary file.}
 \usage{
-readBinary(task, type, subdir = NULL, dirCreate = FALSE)
+readBinary(
+  task,
+  type,
+  subdir = NULL,
+  dirCreate = FALSE,
+  ask = FALSE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{task}{Object of class \code{\link{D4TAlinkTask}}, as created by \code{\link{initTask}}.}
@@ -14,6 +21,10 @@ readBinary(task, type, subdir = NULL, dirCreate = FALSE)
 \item{subdir}{(optional) Subdirectory.}
 
 \item{dirCreate}{Logical, if TRUE (by default) the directory is created.}
+
+\item{ask}{query encryption key from user, default FALSE.}
+
+\item{quiet}{issue warning if file does not exists.}
 }
 \value{
 Object stored in binary file, or \code{NULL} if file does not exist.
