@@ -1,12 +1,12 @@
-462b977c48112238d564059f584205a5 *DESCRIPTION
+b7a369974cf01e9c7692bb0fc0288b6a *DESCRIPTION
 ed01268c751a7089f1dbe3738ab72f91 *NAMESPACE
-001600bb2fa29a070a3cdd689bd01bd0 *NEWS
+12f6b906baa3973b4eebe5992c3bec7c *NEWS
 9ac865dd7a0d7ea6cf2ac5615a8e5f0b *R/D4TAlink-common-args-doc.R
 6899b2b8407b8789363925c30c1a0d7e *R/D4TAlink-doc.R
 1cc8546969f563a394b7b1722b4d3c50 *R/createTask.R
 76a3bdf8482d9a72695095bab1974d24 *R/init.R
-c950f32d8e2d2a481b9274ea2299f103 *R/initTask.R
-c5bdbecf055ccde4bc7508d8d218f1a5 *R/listTasks.R
+0cb00d1ec3ab15c388f38e9becc30e4e *R/initTask.R
+cc63a0785c9f75726a78b3e2a8050a2d *R/listTasks.R
 c0f7ad3938c43fbd63b1ab4c8cb536fb *R/loadTask.R
 c1104987597762ec57a6a64c8d95e183 *R/pathGenerators.R
 252f19a13ac7ac15d50fea89dd50ad33 *R/taskArchive.R
@@ -17,9 +17,9 @@ d0cdeb8de662e309412912dfcbd40c70 *R/taskFiles.R
 832d9362b5af629c74290822253e2554 *R/taskRmarkdown.R
 c2c860e04a88f25b6cb3bf7f481ac73f *R/taskRscript.R
 fcaf386968dada10bf71bf90ee917a76 *build/vignette.rds
-0d70065f9918b4084e14fa22d52ed8c1 *inst/doc/D4TAlink_basics.R
-d41aff143c010a6472f38686dcc0f208 *inst/doc/D4TAlink_basics.Rmd
-d0df5e38f2703f1c26ae8ae20bae32b3 *inst/doc/D4TAlink_basics.html
+4f91cb73f5ac06e84cf62d7e5b03f5af *inst/doc/D4TAlink_basics.R
+bd8ed078688c0b2413c30b329a366687 *inst/doc/D4TAlink_basics.Rmd
+b0ed11dbafffc4073077e76e031aa413 *inst/doc/D4TAlink_basics.html
 c0d9cdcc0b056a28865b4597407b3313 *inst/template/SQU4REtemplate.Rmd
 43c0efc75576d70d35a61cf50d7ae5b4 *inst/template/SQU4REtemplate.docx
 d14459b497681b35e990f972c2dad666 *inst/template/template.R
@@ -52,7 +52,7 @@ b6b9c6a37ec45d82713f4e8cdf873434 *man/initTaskRmd.Rd
 d4c5b90f1376b043a66e6143c6d5eaa0 *man/jpegReport.Rd
 17179cccfb5080f42389fc023eb3ed9f *man/jpegReportFn.Rd
 4e93415084313e975c88d877ec2bd3e9 *man/listTaskFiles.Rd
-169809a6e28958c3c3a3b47cc33c4330 *man/listTasks.Rd
+5e5997925f21eb31be15ffa1cf006617 *man/listTasks.Rd
 711ae1c9e6622015106418e8a1ef4e61 *man/loadTask.Rd
 be61340b64c5ea94847c0cde8584be3f *man/pathsDefault.Rd
 9301bcaa761073ade670eef3723048fb *man/pathsGLPG.Rd
@@ -84,5 +84,5 @@ eabf54c4a640636ea97e9cb0524bf418 *man/setTaskRmdTemplate.Rd
 e8cb00df71d3527e0175623129774dd0 *man/setTaskStructure.Rd
 8274203d9d750bd15b6c8071f1c9ffc6 *man/taskID.Rd
 d369f53d1f3d6630f2ef66dfb125e202 *tests/testthat.R
-ae07e12585d415fc86c08989fab2c262 *tests/testthat/test01.R
-d41aff143c010a6472f38686dcc0f208 *vignettes/D4TAlink_basics.Rmd
+ab3652af173ab70674e6bfb6cc16d56c *tests/testthat/test01.R
+bd8ed078688c0b2413c30b329a366687 *vignettes/D4TAlink_basics.Rmd

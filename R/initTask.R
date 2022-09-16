@@ -32,7 +32,7 @@ initTask <- function(project, package, taskname,
   if(templateCreate) initTaskRmd(task)
   if(file.exists(dirname(getTaskFilepath(task,"task","rds","bin")))) {
     saveBinary(task,task,"task")
-    cat(jsonlite::toJSON(task),file=file.path(binaryDir(task),paste0(task$task,"task.json")))
+    cat(jsonlite::toJSON(task),file=file.path(binaryDir(task),paste0(task$task,"_task.json")))
   }
   invisible(task)
 }

@@ -223,7 +223,9 @@ structuring of R&amp;D activities in compliance with FAIR and ALCOA principles. 
 
 <p>Install latest version from <a href="https://bitbucket.org/SQ4/d4talink.light">Bitbucket</a>:</p>
 
-<pre><code class="r">devtools::install_bitbucket(&quot;SQ4/d4talink.light&quot;,subdir=&quot;D4TAlink.light&quot;)
+<pre><code class="r">if (!require(&quot;devtools&quot;, quietly = TRUE))
+    install.packages(&quot;devtools&quot;)
+devtools::install_bitbucket(&quot;SQ4/d4talink.light&quot;,subdir=&quot;D4TAlink.light&quot;)
 </code></pre>
 
 <p>Note that you may need to install: </p>

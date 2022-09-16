@@ -8,6 +8,8 @@ knitr::opts_chunk$set(
 #  install.packages("D4TAlink.light")
 
 ## ---- eval=FALSE--------------------------------------------------------------
+#  if (!require("devtools", quietly = TRUE))
+#      install.packages("devtools")
 #  devtools::install_bitbucket("SQ4/d4talink.light",subdir="D4TAlink.light")
 
 ## ---- eval=FALSE--------------------------------------------------------------

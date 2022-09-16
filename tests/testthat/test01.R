@@ -34,6 +34,10 @@ test_that("typical workflow",{
   file <- renderTaskRmd(task) # requires having run 'tinytex::install_tinytex()'
   if(FALSE) openPDF(file)
   ## ----------------------------
+  newtask <- initTask("myProject","myPackage","20220202_otherTask")
+  expect_equal(length(listTaskFiles(newtask)$bin),2)
+  expect_equal(nrow(listTasks()),2)
+  ## ----------------------------
   file <- tempfile()
   file.copy(getTaskRmdTemplate(),file)
   setTaskRmdTemplate(file)
@@ -47,9 +51,9 @@ test_that("typical workflow",{
   ## ----------------------------
   setTaskRoot(tempfile(),dirCreate=TRUE)
   #setTaskRoot("~/dtest2",dirCreate=TRUE)
-  l <- restoreTask(file)
+  retask <- restoreTask(file)
   print(list.files(getTaskRoot(),recursive=TRUE,full.names=TRUE))
   unlink(getTaskRoot(),recursive=TRUE)
   ## ----------------------------
-  expect_equal(task$task,tn)
+  expect_equal(retask$task,tn)
 })

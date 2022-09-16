@@ -4,31 +4,39 @@
 #' @return \code{\link{data.frame}} with the following information for tasks "sponsor", "project", "package", "task".
 #' @importFrom stats setNames
 #' @export
-listTasks <- function(project=NULL,package=NULL,rootpath=getTaskRoot()) {
+listTasks <- function(project=NULL,package=NULL,sponsor=NULL,rootpath=getTaskRoot()) {
   fns <- ""
   pa <- NULL
-  u <- gsub("%ROOT%",rootpath,getTaskStructure()("%PROJECT%","%PACKAGE%","%TASK%")$bin)
+  u <- gsub("%ROOT%",rootpath,fixed=TRUE,
+            getTaskStructure()("%PROJECT%","%PACKAGE%","%TASK%",sponsor="%SPONSOR%")$bin)
   if(!is.null(project)) u <- gsub("%PROJECT%",project,u)
   if(!is.null(package)) u <- gsub("%PACKAGE%",package,u)
+  if(!is.null(sponsor)) u <- gsub("%SPONSOR%",package,u)
   u <- unlist(strsplit(u,"%[A-Z]+%"))
   for(i in 1:length(u)) {
     d <- u[[i]]
-    if(i==length(u)) pa <- "_task[.]json$"
+    if(i==length(u)) pa <- "task[.]json$"
     fnn <- NULL
     for(r in paste0(fns,d)) {
       fnn <- unique(c(fnn,list.files(r,pa,full.names=TRUE)))
     }
     fns <- fnn
   }
-
+  if(length(fns)==0) stop("no task found")
   taz <- stats::setNames(lapply(fns,function(fn)jsonlite::fromJSON(readChar(fn,file.size(fn)))),
                   fns)
-  ans <- list()
-  for(f in c("company", "project", "package", "task","author","date"))
-    ans[[f]] <- sapply(taz,`[[`,f)
-  ans <- lapply(ans,function(x)unlist(x)[match(fns,names(x))])
-  ans <- as.data.frame(ans)
-  names(ans) <- gsub("company","sponsor",names(ans))
+  ans <- data.frame(n=fns,
+                    sponsor=NA,project=NA,package=NA,task=NA,author=NA,date=NA,
+                    row.names = fns)
+  for(n in rownames(ans)) {
+    for(f in c("sponsor", "project", "package", "task","author","date"))
+      if(!is.null(taz[[n]][[f]]))
+        ans[n,f] <- taz[[n]][[f]]
+    f <- "company"
+    if(!is.null(taz[[n]][[f]]))
+      ans[n,"sponsor"] <- taz[[n]][[f]]
+  }
+  ans$n <- NULL
   rownames(ans) <- NULL
   ans
 }

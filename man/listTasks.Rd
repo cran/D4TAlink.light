@@ -4,12 +4,19 @@
 \alias{listTasks}
 \title{List details of all tasks stored in the root directory.}
 \usage{
-listTasks(project = NULL, package = NULL, rootpath = getTaskRoot())
+listTasks(
+  project = NULL,
+  package = NULL,
+  sponsor = NULL,
+  rootpath = getTaskRoot()
+)
 }
 \arguments{
 \item{project}{Project name.}
 
 \item{package}{Package name.}
+
+\item{sponsor}{Sponsor name, default set by \code{\link{setTaskSponsor}}.}
 
 \item{rootpath}{Path of the task repository, default set by \code{\link{setTaskRoot}}.}
 }
