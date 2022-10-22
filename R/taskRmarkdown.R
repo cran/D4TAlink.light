@@ -1,3 +1,12 @@
+## =======================================================================
+#' Get path of R script file name.
+#' @inheritParams D4TAlink-common-args
+#' @return File path.
+#' @export
+rmdFn <- function(task)
+  file.path(getTaskPaths(task)[["code"]],paste0(task$task,".Rmd"))
+
+## =======================================================================
 #' Create task template in Rmd format.
 #' @param overwrite overwrite Rmd file if exists, default FALSE
 #' @inheritParams D4TAlink-common-args
@@ -5,13 +14,12 @@
 #' @return the file name invisibly.
 #' @export
 initTaskRmd <- function(task,encoding="unknown",overwrite=FALSE) {
-  fn <- file.path(getTaskPaths(task)[["code"]],paste0(task$task,".Rmd"))
+  fn <- rmdFn(task)
   if(file.exists(fn)&&!overwrite) stop("The task R markdown file already exists. Set 'overwrite' to FALSE to overwrite the existing file.")
   fo <- function(x) { for(e in c("%","_")) x<-gsub(e,paste0("\\",e),x,fixed=TRUE) ; x }
   tfn <- getTaskRmdTemplate()
   tin <- readLines(tfn,encoding=encoding,warn=FALSE)
-  date <- format(as.Date(gsub("(^[^_]*)_.*", "\\1", task$task),"%Y%m%d"),"%Y-%m-%d")
-  tin <- gsub("%DATE%"    ,date,tin,fixed=TRUE)
+  tin <- gsub("%DATE%"    ,task$date,tin,fixed=TRUE)
   tin <- gsub("%TASKID%",taskID(task),tin,fixed=TRUE)
   tin <- gsub("%TASKIDX%",fo(taskID(task)),tin,fixed=TRUE)
   u <- unlist(task)
@@ -53,16 +61,16 @@ renderTaskRmd <- function(task,output_format=NULL,debug=FALSE,clean=TRUE,...){
     file.copy(from=tfn,to=odr)
     file.remove(tfn)
   }
-  if(grepl("docx$",fn)) formatTaskDocx(task)
+  if(grepl("docx$",fn)) formatTaskDocx(task,fn)
   invisible(fn)
 }
 
 #' Replace default task fields in 'docx' file.
+#' @param ifn input file name.
 #' @inheritParams D4TAlink-common-args
 #' @importFrom utils zip
 #' @return the file name invisibly.
-formatTaskDocx <- function(task) {
-  ifn <- file.path(getTaskPaths(task)[["doc"]],paste0(task$task,".docx"))
+formatTaskDocx <- function(task,ifn) {
   if(!file.exists(ifn)) stop("No word documentation found. Create it using 'renderTaskRmd'.")
   tloc <- tempfile() # paste0(ifn,".xct")
   unlink(tloc,recursive=TRUE)
@@ -85,7 +93,7 @@ formatTaskDocx <- function(task) {
       s <- gsub('%TYPE%','task report',s,fixed=TRUE)
     }
     if(sa) {
-      print(f)
+      #print(f)
       cat(s,file=f)
       zip(ifn,f,flags="")
     }

@@ -27,6 +27,13 @@ archiveTask <- function(task,file,overwrite=FALSE,...) {
                         pattern=sprintf("^%s[._-]",task$task))) if(!grepl("[#~]$",f)) {
       file.copy(f,cd,recursive=TRUE,copy.date=TRUE)
     }
+    ## backward compatibility
+    if((ty=="doc")&&
+       file.exists(file.path(pz[[ty ]],"R")))
+      for(f in list.files(file.path(pz[[ty ]],"R"),recursive=FALSE,full.names=TRUE,
+                          pattern=sprintf("^%s[-._]",task$task))) if(!grepl("[#~]$",f)) {
+        file.copy(f,cd,recursive=TRUE,copy.date=TRUE)
+      }
   }
   ## =====
   owd <- getwd()
@@ -59,7 +66,8 @@ restoreTask <- function(file,overwrite=FALSE,list=FALSE,...) {
   if(length(tf)!=1) stop("cannot locate task in zip file")
   task <- readRDS(tf)
   if(!inherits(task,"D4TAlinkTask")) stop("the zip file does not contains a task")
-  task$paths <- getTaskStructure()(project=task$project,package=task$package,taskname=task$task,sponsor=task$sponsor)
+  if(is.null(task$sponsor)) task$sponsor <- task$company
+  #task$paths <- getTaskStructure()(project=task$project,package=task$package,taskname=task$task,sponsor=task$sponsor)
   ## ======
   pz <- getTaskPaths(task)
   for(p in unlist(pz)) dir.create(p,recursive=TRUE,showWarnings=FALSE)
@@ -74,7 +82,7 @@ restoreTask <- function(file,overwrite=FALSE,list=FALSE,...) {
   }
   ## ======
   saveBinary(task,task,"task")
-  cat(jsonlite::toJSON(task),file=file.path(binaryDir(task),paste0(task$task,"task.json")))
+  cat(jsonlite::toJSON(unclass(task)),file=file.path(binaryDir(task),paste0(task$task,"_task.json")))
   ## ======
   if(list) invisible(ls)
   invisible(task)

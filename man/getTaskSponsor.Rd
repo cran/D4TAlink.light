@@ -4,7 +4,10 @@
 \alias{getTaskSponsor}
 \title{Get the name of the task sponsor.}
 \usage{
-getTaskSponsor()
+getTaskSponsor(quiet = FALSE)
+}
+\arguments{
+\item{quiet}{suppress error messages, default=FALSE.}
 }
 \value{
 The current name of the tasks sponsor.
@@ -13,5 +16,5 @@ The current name of the tasks sponsor.
 Get the name of the task sponsor.
 }
 \examples{
-getTaskSponsor()
+getTaskSponsor(quiet=TRUE)
 }

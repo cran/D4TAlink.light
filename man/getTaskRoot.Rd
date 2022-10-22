@@ -4,7 +4,10 @@
 \alias{getTaskRoot}
 \title{Get the root of the task repository.}
 \usage{
-getTaskRoot()
+getTaskRoot(quiet = FALSE)
+}
+\arguments{
+\item{quiet}{suppress error messages, default=FALSE.}
 }
 \value{
 Path to the current task root.
@@ -13,5 +16,5 @@ Path to the current task root.
 Get the root of the task repository.
 }
 \examples{
-getTaskRoot()
+getTaskRoot(quiet=TRUE)
 }

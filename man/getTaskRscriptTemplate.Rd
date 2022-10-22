@@ -4,7 +4,10 @@
 \alias{getTaskRscriptTemplate}
 \title{Get the path to the R script task template.}
 \usage{
-getTaskRscriptTemplate()
+getTaskRscriptTemplate(quiet = FALSE)
+}
+\arguments{
+\item{quiet}{suppress error messages, default=FALSE.}
 }
 \value{
 The path to the R script task template.

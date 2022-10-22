@@ -1,8 +1,8 @@
 Package: D4TAlink.light
 Type: Package
 Title: FAIR Data - Workflow Management
-Version: 2.1.9
-Date: 2022-09-15
+Version: 2.1.11
+Date: 2022-10-19
 Authors@R: c(
   person(given = "Gregoire", family = "Thomas", 
   role = c("aut", "cre"),
@@ -27,6 +27,6 @@ URL: https://bitbucket.org/SQ4/d4talink.light, https://www.d4ta.link/
 ByteCompile: true
 BugReports: https://bitbucket.org/SQ4/d4talink.light/issues
 NeedsCompilation: no
-Packaged: 2022-09-15 12:50:26 UTC; Gregoire
+Packaged: 2022-10-22 09:45:55 UTC; Gregoire
 Repository: CRAN
-Date/Publication: 2022-09-16 12:16:07 UTC
+Date/Publication: 2022-10-22 10:07:50 UTC

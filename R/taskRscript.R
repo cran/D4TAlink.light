@@ -1,3 +1,12 @@
+## =======================================================================
+#' Get path of R script file name.
+#' @inheritParams D4TAlink-common-args
+#' @return File path.
+#' @export
+rscriptFn <- function(task)
+  file.path(getTaskPaths(task)[["code"]],paste0(task$task,".R"))
+
+## =======================================================================
 #' Create task R script.
 #' @param overwrite overwrite R file if exists, default FALSE
 #' @inheritParams D4TAlink-common-args
@@ -5,7 +14,7 @@
 #' @return the file name invisibly.
 #' @export
 initTaskRscript <- function(task,overwrite=FALSE,encoding="unknown") {
-  fn <- file.path(getTaskPaths(task)[["code"]],paste0(task$task,".R"))
+  fn <- rscriptFn(task)
   if(file.exists(fn)&&!overwrite) stop("The task R script file already exists. Set 'overwrite' to FALSE to overwrite the existing file.")
   tfn <- getTaskRscriptTemplate()
   tin <- readLines(tfn,encoding=encoding,warn=FALSE)

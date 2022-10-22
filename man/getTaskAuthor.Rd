@@ -4,7 +4,10 @@
 \alias{getTaskAuthor}
 \title{Get the name of the task author.}
 \usage{
-getTaskAuthor()
+getTaskAuthor(quiet = FALSE)
+}
+\arguments{
+\item{quiet}{suppress error messages, default=FALSE.}
 }
 \value{
 The current name of the tasks author.
@@ -13,5 +16,5 @@ The current name of the tasks author.
 Get the name of the task author.
 }
 \examples{
-getTaskAuthor()
+getTaskAuthor(quiet=TRUE)
 }

@@ -12,8 +12,9 @@ loadTask <- function(project, package, taskname,
   ta <- readBinary(task=tabk,type="task",quiet=quiet)
   ## back-compatibility
   if(!is.null(ta)) {
-    ta$paths <- lapply(ta$paths,gsub,pattern=paste0("^",ta$paths$root),replacement="%ROOT%")
-    ta$paths$root <- "%ROOT%"
+    ta$paths <- NULL
+    #ta$paths <- lapply(ta$paths,gsub,pattern=paste0("^",ta$paths$root),replacement="%ROOT%")
+    #ta$paths$root <- "%ROOT%"
   }
   ta
 }

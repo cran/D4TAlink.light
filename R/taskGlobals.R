@@ -1,3 +1,17 @@
+##### envvar #####
+#' Get env var.
+#' @param name name of variable
+#' @param desc description of variable
+#' @param quiet suppress error messages, default=FALSE.
+#' @return Environment variable.
+D4getenv <- function(name,desc,quiet=FALSE) {
+  if(exists(name,envir=.pkgEnv)) {
+    return(get(x=name,pos=.pkgEnv))
+  } else if(quiet) {
+    return(NA)
+  } else stop(paste(desc,"not defined"))
+}
+
 ##### root #####
 #' Set the root of the task repository.
 #' @inheritParams D4TAlink-common-args
@@ -11,10 +25,12 @@ setTaskRoot <- function(rootpath,dirCreate=FALSE){
 }
 
 #' Get the root of the task repository.
+#' @inheritParams D4getenv
 #' @return Path to the current task root.
-#' @examples getTaskRoot()
+#' @examples getTaskRoot(quiet=TRUE)
 #' @export
-getTaskRoot <- function() get(x="rootpath",pos=.pkgEnv)
+getTaskRoot <- function(quiet=FALSE)
+  D4getenv("rootpath","Root path",quiet=quiet)
 
 ##### author #####
 
@@ -30,10 +46,12 @@ setTaskAuthor <- function(author){
 }
 
 #' Get the name of the task author.
+#' @inheritParams D4getenv
 #' @return The current name of the tasks author.
-#' @examples getTaskAuthor()
+#' @examples getTaskAuthor(quiet=TRUE)
 #' @export
-getTaskAuthor <- function() get(x="authorname",pos=.pkgEnv)
+getTaskAuthor <- function(quiet=FALSE)
+  D4getenv("authorname","Author",quiet=quiet)
 
 ##### sponsor #####
 
@@ -49,10 +67,12 @@ setTaskSponsor <- function(sponsor){
 }
 
 #' Get the name of the task sponsor.
+#' @inheritParams D4getenv
 #' @return The current name of the tasks sponsor.
-#' @examples getTaskSponsor()
+#' @examples getTaskSponsor(quiet=TRUE)
 #' @export
-getTaskSponsor <- function() get(x="sponsorname",pos=.pkgEnv)
+getTaskSponsor <- function(quiet=FALSE)
+  D4getenv("sponsorname","Sponsor",quiet=quiet)
 
 ##### structure #####
 
@@ -61,7 +81,7 @@ getTaskSponsor <- function() get(x="sponsorname",pos=.pkgEnv)
 #' @examples
 #' fun <- function(project,package,taskname,sponsor) {
 #'   basePath <- file.path("%ROOT%",sponsor,project,package)
-#'   paths <- list(
+#'   list(
 #'     root = "%ROOT%",
 #'     datasrc = file.path(basePath, "raw", "data_source"),
 #'     data = file.path(basePath, "output","adhoc",taskname),
@@ -80,9 +100,11 @@ setTaskStructure <- function(pathgen){
 }
 
 #' Get repository directory structure.
+#' @inheritParams D4getenv
 #' @return The directory structure function.
 #' @export
-getTaskStructure <- function() get(x="pathgen",pos=.pkgEnv)
+getTaskStructure <- function(quiet=FALSE)
+  D4getenv("pathgen","Task file structure",quiet=quiet)
 
 ##### RmdTemplate #####
 
@@ -106,9 +128,11 @@ setTaskRmdTemplate <- function(file,encoding="unknown"){
 }
 
 #' Get the path to the Rmd task template.
+#' @inheritParams D4getenv
 #' @return The path to the Rmd task template.
 #' @export
-getTaskRmdTemplate <- function() get(x="rmdTempl",pos=.pkgEnv)
+getTaskRmdTemplate <- function(quiet=FALSE)
+  D4getenv("rmdTempl","R markdown template",quiet=quiet)
 
 ##### RscriptTemplate #####
 
@@ -122,10 +146,11 @@ setTaskRscriptTemplate <- function(file){
 }
 
 #' Get the path to the R script task template.
+#' @inheritParams D4getenv
 #' @return The path to the R script task template.
 #' @export
-getTaskRscriptTemplate <- function() get(x="rscriptTempl",pos=.pkgEnv)
-
+getTaskRscriptTemplate <- function(quiet=FALSE)
+  D4getenv("rscriptTempl","R script template",quiet=quiet)
 
 ##### EncryptionKey #####
 

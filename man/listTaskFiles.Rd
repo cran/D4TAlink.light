@@ -4,7 +4,7 @@
 \alias{listTaskFiles}
 \title{List the files associated to a task.}
 \usage{
-listTaskFiles(task, full.names = FALSE)
+listTaskFiles(task, full.names = FALSE, which = NULL)
 }
 \arguments{
 \item{task}{Object of class \code{\link{D4TAlinkTask}}, as created by \code{\link{initTask}}.}
@@ -12,6 +12,8 @@ listTaskFiles(task, full.names = FALSE)
 \item{full.names}{a logical value.  If \code{TRUE}, the directory
     path is prepended to the file names to give a relative file path.
     If \code{FALSE}, the file names (rather than paths) are returned.}
+
+\item{which}{list of file types to list.}
 }
 \value{
 array of file names.

@@ -3,8 +3,10 @@
 #' @inheritParams D4TAlink-common-args
 #' @return List of task's paths.
 #' @export
-getTaskPaths <- function(task)
-  lapply(task$paths,gsub,pattern="%ROOT%",replacement=getTaskRoot(),fixed=TRUE)
+getTaskPaths <- function(task) {
+  l <- getTaskStructure()(task$project,task$package,task$task,task$sponsor)
+  lapply(l,gsub,pattern="%ROOT%",replacement=getTaskRoot(),fixed=TRUE)
+}
 
 ## ---------------------------------------------------------------------
 #' Get the path of a file.

@@ -4,4 +4,4 @@
 #' @return String with task ID as:[sponsor][sep][project][sep][package][sep][task]
 #' @export
 taskID <- function(task,sep="/")
-	id <- paste(task$sponsor,task$project,task$package,task$task,sep=sep)
+	paste(task$sponsor,task$project,task$package,task$task,sep=sep)

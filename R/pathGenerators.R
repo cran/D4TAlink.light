@@ -13,7 +13,7 @@
 #' @export
 pathsDefault <- function(project,package,taskname,sponsor) {
   basePath <- file.path("%ROOT%",sponsor,project,package)
-  paths <- list(
+  list(
     root = "%ROOT%",
     datasrc = file.path(basePath, "raw", "data_source"),
     data = file.path(basePath, "output",taskname),
@@ -39,7 +39,7 @@ pathsDefault <- function(project,package,taskname,sponsor) {
 #' @export
 pathsGLPG <- function(project,package,taskname,sponsor) {
   basePath <- file.path("%ROOT%",sponsor,project,package)
-  paths <- list(
+  list(
     root = "%ROOT%",
     datasrc = file.path(basePath, "raw", "data_source"),
     data = file.path(basePath, "output","adhoc",taskname),
@@ -65,7 +65,7 @@ pathsGLPG <- function(project,package,taskname,sponsor) {
 #' @export
 pathsPMS <- function(project,package,taskname,sponsor) {
   basePath <- file.path("%ROOT%","%TYPE%",project,package)
-  paths <- list(
+  list(
     root = "%ROOT%",
     datasrc = file.path(gsub("%TYPE%","PMS_data",basePath),"data_source"),
     data = file.path(gsub("%TYPE%","PMS_data",basePath),taskname),

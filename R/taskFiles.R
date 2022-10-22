@@ -236,8 +236,7 @@ pdfReport <- function(task,type,ext="pdf",subdir=NULL,dirCreate=TRUE,
                       landscape=NULL,...) {
   mm2in <- 25.4
   if(is.na(title)) title <- paste0(
-    "SQU4RE:PMS - ",
-    paste(task[c("company","project","package","task")],collapse=":")," - ",paste(type,collapse="-"),
+    taskID(task)," - ",paste(type,collapse="-"),
     " - ",task$author)
   if(!is.null(height)) dim[1] <- height
   if(!is.null(width )) dim[2] <- width

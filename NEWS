@@ -1,3 +1,17 @@
+D4TAlink.light v2.1.11
+================
+
+* Set title of pdf documents to 'taskID - author - type'.
+* Remove slot 'paths' from D4TAlinkTask.
+* Add error catching and argument 'quiet' in functions getting globals.
+
+D4TAlink.light v2.1.10
+================
+
+* Added "quick start" vignette.
+* Solve date bug in 'initTaskRmd' when task name not formatted %Y%m%d_NAME
+* Handle incompatibility with latest version of jsonlite
+
 D4TAlink.light v2.1.9
 ================
 

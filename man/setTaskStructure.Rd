@@ -18,7 +18,7 @@ Set task repository directory structure.
 \examples{
 fun <- function(project,package,taskname,sponsor) {
   basePath <- file.path("\%ROOT\%",sponsor,project,package)
-  paths <- list(
+  list(
     root = "\%ROOT\%",
     datasrc = file.path(basePath, "raw", "data_source"),
     data = file.path(basePath, "output","adhoc",taskname),

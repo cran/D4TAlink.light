@@ -25,5 +25,5 @@
   if(nchar(v<-Sys.getenv("D4TAlink_sq5key"))) setTaskEnckey(v)
 
   #packageStartupMessage(sprintf("--- D4TAlink\n    author : %s\n    sponsor: %s\n    root   : %s\n ---",
-  #                getTaskAuthor(),getTaskSponsor(),getTaskRoot()))
+  #                getTaskAuthor(quiet=TRUE),getTaskSponsor(quiet=TRUE),getTaskRoot(quiet=TRUE)))
 }

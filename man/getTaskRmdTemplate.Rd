@@ -4,7 +4,10 @@
 \alias{getTaskRmdTemplate}
 \title{Get the path to the Rmd task template.}
 \usage{
-getTaskRmdTemplate()
+getTaskRmdTemplate(quiet = FALSE)
+}
+\arguments{
+\item{quiet}{suppress error messages, default=FALSE.}
 }
 \value{
 The path to the Rmd task template.

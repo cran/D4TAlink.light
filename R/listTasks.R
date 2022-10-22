@@ -45,19 +45,21 @@ listTasks <- function(project=NULL,package=NULL,sponsor=NULL,rootpath=getTaskRoo
 #' List the files associated to a task.
 ##' @inheritParams base::list.files
 #' @inheritParams D4TAlink-common-args
+#' @param which list of file types to list.
 #' @return array of file names.
 #' @export
-listTaskFiles <- function(task,full.names=FALSE) {
+listTaskFiles <- function(task,full.names=FALSE,which=NULL) {
   pz <- getTaskPaths(task)
   fns <- list()
-  for(ty in c("bin","data")) {
+  if(is.null(which)) which <- c("bin","data","code","doc")
+  for(ty in intersect(c("bin","data"),which)) {
     fns[[ty]] <- fz <- setdiff(list.files(pz[[ty ]],recursive=FALSE,full.names=TRUE,include.dirs=TRUE),pz)
     if(!full.names) fns[[ty]] <- basename(fns[[ty]])
     for(f in fz)
       fns[[ty]] <- c(fns[[ty]],list.files(f,recursive=TRUE,full.names=full.names))
   }
   ## =====
-  for(ty in c("doc","code")) {
+  for(ty in intersect(c("doc","code"),which)) {
     fns[[ty]] <- list.files(pz[[ty ]],recursive=TRUE,full.names=full.names,
                             pattern=sprintf("^%s[._-].*[^#~]$",task$task))
   }

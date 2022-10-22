@@ -5,12 +5,72 @@ knitr::opts_chunk$set(
 )
 
 ## ---- eval=FALSE--------------------------------------------------------------
+#  NA
+
+## ---- eval=FALSE--------------------------------------------------------------
 #  install.packages("D4TAlink.light")
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  if (!require("devtools", quietly = TRUE))
 #      install.packages("devtools")
 #  devtools::install_bitbucket("SQ4/d4talink.light",subdir="D4TAlink.light")
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  if (!require("D4TAlink.light", quietly = TRUE)) install.packages("D4TAlink.light")
+#  library(D4TAlink.light)
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  setTaskAuthor("Doe Johns")
+#  setTaskSponsor("myClient")
+#  setTaskRoot("~/myDataRepository", dirCreate = TRUE)
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  task1 <- initTask(project = "DiseaseABC",
+#                    package = "myStudy",
+#                    taskname = "2022-09-01_myFirstAnalysis")
+#  task2 <- initTask(project = "DiseaseABC",
+#                    package = "myStudy",
+#                    taskname = "2022-09-05_mySecondAnalysis")
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  print(listTasks())
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  mytask <- loadTask(project = "DiseaseABC",
+#                    package = "myStudy",
+#                    taskname = "2022-09-05_mySecondAnalysis")
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  d <- list(letters = data.frame(a = LETTERS, b = letters, c = 1:length(letters)),
+#            other = data.frame(a = 1:3, b = 11:13))
+#  saveBinary(d, mytask, "myTables")
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  e  <- readBinary(mytask, "myTables")
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  excelfilename <- saveReportXls(d, mytask, "tables")
+#  
+#  pdffilename <- pdfReport(mytask, "myPlot", dim = c(150, 150)) # 150mm x 150mm
+#  plot(pi)
+#  dev.off()
+#  
+#  csvfile <- reportFn(mytask, "someData", "csv")
+#  p <- data.frame(a = LETTERS, b = letters, c = 1:length(letters))
+#  write.table(p, csvfile)
+#  print(csvfile)
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  rmdfile <- initTaskRmd(mytask)
+#  print(rmdfile)
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  # May require having run 'tinytex::install_tinytex()'
+#  docfile <- renderTaskRmd(mytask)
+#  if (require("Biobase", quietly = TRUE)) Biobase::openPDF(docfile)
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  print(listTaskFiles(mytask))
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  library(D4TAlink.light)
@@ -26,13 +86,17 @@ knitr::opts_chunk$set(
 #  setTaskStructure(pathsDefault)
 
 ## ---- eval=FALSE--------------------------------------------------------------
-#  # make sure that the sopnsor was defined
+#  # Set the base parameters
+#  library(D4TAlink.light)
+#  setTaskAuthor("Doe Johns")
 #  setTaskSponsor("mySponsor")
+#  setTaskRoot(file.path(tempdir(),"D4TAlink_example001"),dirCreate=TRUE)
 #  
 #  # create a task
 #  task <- initTask(project="myProject",
 #                   package="myPackage",
 #                   taskname=sprintf("%s_myTask",format(Sys.time(),"%Y%m%d")))
+#  print(listTasks())
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  listTaskFiles(task)
@@ -41,10 +105,28 @@ knitr::opts_chunk$set(
 #  listTasks()
 
 ## ---- eval=FALSE--------------------------------------------------------------
+#  file <- initTaskRmd(task)
+#  print(file)
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  file <- renderTaskRmd(task) # may require having run 'tinytex::install_tinytex()'
+#  Biobase::openPDF(file)
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  file <- initTaskRscript(task)
+#  print(file)
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  d <- list(letters=data.frame(a=LETTERS,b=letters,c=1:length(letters)),
+#            other=data.frame(a=1:3,b=11:13))
+#  file <- saveReportXls(d,task,"tables")
+#  print(file)
+
+## ---- eval=FALSE--------------------------------------------------------------
 #  file <- pdfReport(task,c("plots",1),dim=c(100,100))
 #  hist(rnorm(100))
 #  dev.off()
-#  openPDF(file)
+#  Biobase::openPDF(file)
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  file <- pngReport(task,c("plots",1),dim=c(300,300))
@@ -59,18 +141,14 @@ knitr::opts_chunk$set(
 #  print(file)
 
 ## ---- eval=FALSE--------------------------------------------------------------
-#  d <- list(letters=data.frame(a=LETTERS,b=letters,c=1:length(letters)),
-#            other=data.frame(a=1:3,b=11:13))
-#  file <- saveReportXls(d,task,"tables")
+#  file <- reportFn(task,"someData","csv")
+#  d <- data.frame(a=LETTERS,b=letters,c=1:length(letters))
+#  write.table(d,file)
 #  print(file)
 
 ## ---- eval=FALSE--------------------------------------------------------------
-#  file <- saveReportTable(d$letters,task,"tables")
-#  print(file)
-
-## ---- eval=FALSE--------------------------------------------------------------
-#  d <- list(letters=data.frame(a=LETTERS,b=letters,c=1:length(letters)),
-#            other=data.frame(a=1:3,b=11:13))
+#  d <- list(letters = data.frame(a=LETTERS,b=letters,c=1:length(letters)),
+#            other   = data.frame(a=1:3,b=11:13))
 #  task <- initTask(project="myProject",
 #                   package="myPackage",
 #                   taskname="20220801_parentTask")
@@ -78,22 +156,13 @@ knitr::opts_chunk$set(
 #  print(file)
 
 ## ---- eval=FALSE--------------------------------------------------------------
-#  task <- initTask(project="myProject",
-#                   package="myPackage",
-#                   taskname="20220801_childTask")
-#  e <- readBinary(loadTask(task$project,task$package,"20220801_parentTask"),"someData")
-
-## ---- eval=FALSE--------------------------------------------------------------
-#  file <- initTaskRmd(task)
-#  print(file)
-
-## ---- eval=FALSE--------------------------------------------------------------
-#  file <- renderTaskRmd(task) # may require having run 'tinytex::install_tinytex()'
-#  openPDF(file)
-
-## ---- eval=FALSE--------------------------------------------------------------
-#  file <- initTaskRscript(task)
-#  print(file)
+#  newtask <- initTask(project="myProject",
+#                      package="myPackage",
+#                      taskname="20220801_childTask")
+#  
+#  oldtask <- loadTask(newtask$project, newtask$package, "20220801_parentTask")
+#  e <- readBinary(oldtask,"someData")
+#  print(lapply(e,head))
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  setTaskRoot(file.path(tempdir(),"D4TAlink_exampleFrom"),dirCreate=TRUE)
