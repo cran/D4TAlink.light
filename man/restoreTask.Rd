@@ -4,7 +4,7 @@
 \alias{restoreTask}
 \title{Restore an archive containing the files of a given task from a file created with archiveTask.}
 \usage{
-restoreTask(file, overwrite = FALSE, list = FALSE, ...)
+restoreTask(file, overwrite = FALSE, list = FALSE, code = TRUE, ...)
 }
 \arguments{
 \item{file}{full name of the input zip file}
@@ -15,6 +15,8 @@ restoreTask(file, overwrite = FALSE, list = FALSE, ...)
 
 \item{list}{If \code{TRUE}, list the files and extract none.  The
     equivalent of \command{unzip -l}.}
+
+\item{code}{restore code, default TRUE}
 
 \item{...}{
   Arguments passed on to \code{\link[utils:unzip]{utils::unzip}}

@@ -1,22 +1,16 @@
 ---
 title: "D4TAlink.light - Manual"
 author: "Grégoire Thomas"
-date: "`r format(Sys.Date(), '%B %d, %Y')`"
+date: "October 19, 2022"
 output: rmarkdown::html_vignette
 vignette: |
   %\VignetteIndexEntry{D4TAlink.light - Manual} 
-  %\VignetteEngine{knitr::rmarkdown} 
+  %\VignetteEngine{knitr::knitr} 
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
-```{r , eval=FALSE}
-```
+
+
 
 <!--ts-->
    1. [Introduction](#introduction)
@@ -64,13 +58,15 @@ See also:
 
 Install from [CRAN](https://CRAN.R-project.org/package=D4TAlink.light): 
 
-```{r , eval=FALSE}
+
+```r
 install.packages("D4TAlink.light")
 ```
 
 Install latest version from [Bitbucket](https://bitbucket.org/SQ4/d4talink.light):
 
-```{r , eval=FALSE}
+
+```r
 if (!require("devtools", quietly = TRUE))
     install.packages("devtools")
 devtools::install_bitbucket("SQ4/d4talink.light",subdir="D4TAlink.light")
@@ -83,20 +79,23 @@ Note that you may need to install:
 # 3. Quick start #
 
 1. Load [D4TAlink.light](https://bitbucket.org/SQ4/d4talink.light/)
-```{r , eval=FALSE}
+
+```r
 if (!require("D4TAlink.light", quietly = TRUE)) install.packages("D4TAlink.light")
 library(D4TAlink.light)
 ```
 
 2. Parametrise 
-```{r , eval=FALSE}
+
+```r
 setTaskAuthor("Doe Johns")
 setTaskSponsor("myClient")
 setTaskRoot("~/myDataRepository", dirCreate = TRUE)
 ```
 
 3. Create two tasks (```package``` refers here to a _work package_)
-```{r , eval=FALSE}
+
+```r
 task1 <- initTask(project = "DiseaseABC", 
                   package = "myStudy", 
                   taskname = "2022-09-01_myFirstAnalysis")
@@ -106,31 +105,36 @@ task2 <- initTask(project = "DiseaseABC",
 ```
 
 4. List the tasks in repository
-```{r , eval=FALSE}
+
+```r
 print(listTasks())             
 ```
 
 5. Load a task from the repository 
-```{r , eval=FALSE}
+
+```r
 mytask <- loadTask(project = "DiseaseABC", 
                   package = "myStudy", 
                   taskname = "2022-09-05_mySecondAnalysis")
 ```
 
 6. Add data to a task
-```{r , eval=FALSE}
+
+```r
 d <- list(letters = data.frame(a = LETTERS, b = letters, c = 1:length(letters)), 
           other = data.frame(a = 1:3, b = 11:13))
 saveBinary(d, mytask, "myTables")
 ```
 
 7. Load data from a task
-```{r , eval=FALSE}
+
+```r
 e  <- readBinary(mytask, "myTables")
 ```
 
 8. Add reports to a task
-```{r , eval=FALSE}
+
+```r
 excelfilename <- saveReportXls(d, mytask, "tables")
 
 pdffilename <- pdfReport(mytask, "myPlot", dim = c(150, 150)) # 150mm x 150mm
@@ -144,20 +148,23 @@ print(csvfile)
 ```
 
 9. Add R markdown file from template to a task 
-```{r , eval=FALSE}
+
+```r
 rmdfile <- initTaskRmd(mytask)
 print(rmdfile)
 ```
 
 10. Render a task's R markdown file
-```{r , eval=FALSE}
+
+```r
 # May require having run 'tinytex::install_tinytex()'
 docfile <- renderTaskRmd(mytask) 
 if (require("Biobase", quietly = TRUE)) Biobase::openPDF(docfile)
 ```
 
 11. List content of task 
-```{r , eval=FALSE}
+
+```r
 print(listTaskFiles(mytask))
 ```
 
@@ -168,7 +175,8 @@ print(listTaskFiles(mytask))
 Once the R package loaded, user must set D4TAlink's global parameters, namely 
 the name of the data analyst and the name of the study sponsor.
 
-```{r , eval=FALSE}
+
+```r
 library(D4TAlink.light)
 
 setTaskAuthor("Doe Johns")
@@ -179,13 +187,15 @@ The location of the data file repository, must then be defined. Indeed, D4TAlink
 manages data and information in flat files within a structured directory tree. 
 
 
-```{r , eval=FALSE}
+
+```r
 setTaskRoot(file.path(tempdir(),"D4TAlink_example001"),dirCreate=TRUE)
 ```
 
 As described further below, other parameters can be defined.
 
-```{r , eval=FALSE}
+
+```r
 setTaskRmdTemplate("/SOME/WHERE/my.Rmd")
 setTaskStructure(pathsDefault)
 ```
@@ -225,7 +235,8 @@ each project is assigned to a **sponsor**.
 
 To create an analysis task in R use the following calls.
 
-```{r , eval=FALSE}
+
+```r
 # Set the base parameters 
 library(D4TAlink.light)
 setTaskAuthor("Doe Johns")
@@ -260,13 +271,15 @@ and `DATA_TYPE` does not contain underscores or dots, `_` or `.`.
 
 The function `listTaskFiles` returns a list of files associated with a task: 
 
-```{r , eval=FALSE}
+
+```r
 listTaskFiles(task)
 ```
 
 Similarly, the function `listTasks` returns a list of all tasks in the repository: 
 
-```{r , eval=FALSE}
+
+```r
 listTasks()
 ```
 
@@ -278,14 +291,16 @@ precognises to have one Rmd file per task. `D4TAlink.light` provides functions t
 
 Creation of an R markdown file from template:
 
-```{r , eval=FALSE}
+
+```r
 file <- initTaskRmd(task)
 print(file)
 ```
 
 Rendering of the markdown file into the task documentation directory:
 
-```{r , eval=FALSE}
+
+```r
 file <- renderTaskRmd(task) # may require having run 'tinytex::install_tinytex()'
 Biobase::openPDF(file)
 ```
@@ -294,7 +309,8 @@ Biobase::openPDF(file)
 
 For some tasks an R script may also be needed. A task script can be created from the default template: 
 
-```{r , eval=FALSE}
+
+```r
 file <- initTaskRscript(task)
 print(file)
 ```
@@ -304,7 +320,8 @@ print(file)
 To output a report file in the output directory of a task, use the following.
 
 **XLSX**
-```{r , eval=FALSE}
+
+```r
 d <- list(letters=data.frame(a=LETTERS,b=letters,c=1:length(letters)),
           other=data.frame(a=1:3,b=11:13))
 file <- saveReportXls(d,task,"tables")
@@ -312,7 +329,8 @@ print(file)
 ```
 
 **PDF**
-```{r , eval=FALSE}
+
+```r
 file <- pdfReport(task,c("plots",1),dim=c(100,100))
 hist(rnorm(100))
 dev.off()
@@ -320,7 +338,8 @@ Biobase::openPDF(file)
 ```
 
 **PNG**
-```{r , eval=FALSE}
+
+```r
 file <- pngReport(task,c("plots",1),dim=c(300,300))
 hist(rnorm(100))
 dev.off()
@@ -328,7 +347,8 @@ print(file)
 ```
 
 **JPEG**
-```{r , eval=FALSE}
+
+```r
 file <- jpegReport(task,c("plots",1),dim=c(300,300))
 hist(rnorm(100))
 dev.off()
@@ -336,7 +356,8 @@ print(file)
 ```
 
 **Other**
-```{r , eval=FALSE}
+
+```r
 file <- reportFn(task,"someData","csv")
 d <- data.frame(a=LETTERS,b=letters,c=1:length(letters))
 write.table(d,file)
@@ -352,7 +373,8 @@ from the parent task using the call `saveBinary(loadTask(...),"ojectType")`.
 
 Saving data in a parent task:
 
-```{r , eval=FALSE}
+
+```r
 d <- list(letters = data.frame(a=LETTERS,b=letters,c=1:length(letters)),
           other   = data.frame(a=1:3,b=11:13))
 task <- initTask(project="myProject",
@@ -364,7 +386,8 @@ print(file)
 
 Loading data from a child task: 
 
-```{r , eval=FALSE}
+
+```r
 newtask <- initTask(project="myProject",
                     package="myPackage",
                     taskname="20220801_childTask")
@@ -385,7 +408,8 @@ local repository to a shared repository, and vice versa.
 
 Archiving a task: 
 
-```{r , eval=FALSE}
+
+```r
 setTaskRoot(file.path(tempdir(),"D4TAlink_exampleFrom"),dirCreate=TRUE)
 task <- initTask(project="myProject",
                  package="myPackage",
@@ -397,7 +421,8 @@ print(reportDir(task))
 
 Restoring a task in a different location:
 
-```{r , eval=FALSE}
+
+```r
 setTaskRoot(file.path(tempdir(),"D4TAlink_exampleTo"),dirCreate=TRUE)
 restoreTask(file)
 newtask <- loadTask(project="myProject",
@@ -410,7 +435,8 @@ print(reportDir(newtask))
 
 The R markdown and script templates can be set using the functions `setTaskRmdTemplate` and `setTaskRscriptTemplate` as follows.  
 
-```{r , eval=FALSE}
+
+```r
 setTaskRmdTemplate("/SOME/WHERE/my.Rmd")
 setTaskRscriptTemplate("/SOME/WHERE/my.R")
 ```
@@ -427,7 +453,8 @@ D4TAlink_rscripttempl="/SOME/WHERE/my.R"
 
 The directory structure can be customized, by creating a directory using the command `setTaskStructure` as follows.  
 
-```{r , eval=FALSE}
+
+```r
 fun <- function(project,package,taskname,sponsor) {
   basePath <- file.path("%ROOT%",sponsor,project,package)
   paths <- list(

@@ -4,7 +4,14 @@
 \alias{renderTaskRmd}
 \title{Render the task from the Rmd file}
 \usage{
-renderTaskRmd(task, output_format = NULL, debug = FALSE, clean = TRUE, ...)
+renderTaskRmd(
+  task,
+  output_format = NULL,
+  debug = FALSE,
+  clean = TRUE,
+  suffix = NA,
+  ...
+)
 }
 \arguments{
 \item{task}{Object of class \code{\link{D4TAlinkTask}}, as created by \code{\link{initTask}}.}
@@ -27,6 +34,8 @@ the YAML header or \code{_output.yml}.}
 
 \item{clean}{Using \code{TRUE} will clean intermediate files that are created
 during rendering.}
+
+\item{suffix}{Filename suffix, used to develop scripts for sub-analyses for a given task, default NA.}
 
 \item{...}{
   Arguments passed on to \code{\link[rmarkdown:render]{rmarkdown::render}}

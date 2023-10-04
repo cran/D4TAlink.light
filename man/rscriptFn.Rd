@@ -4,10 +4,12 @@
 \alias{rscriptFn}
 \title{Get path of R script file name.}
 \usage{
-rscriptFn(task)
+rscriptFn(task, suffix = NA)
 }
 \arguments{
 \item{task}{Object of class \code{\link{D4TAlinkTask}}, as created by \code{\link{initTask}}.}
+
+\item{suffix}{Filename suffix, used to develop scripts for sub-analyses for a given task, default NA.}
 }
 \value{
 File path.

@@ -13,6 +13,7 @@
 
 #' @param type Filename type. If the type is an array, the cocatenation of the elements is used with separator"-". Filenames have the form [task name]_[type].[ext]
 #' @param ext Filename extension.
+#' @param suffix Filename suffix, used to develop scripts for sub-analyses for a given task, default NA.
 #' @param dirType Directory type, e.g. 'bin' or 'data' or 'doc'.
 
 #' @param subdir (optional) Subdirectory.

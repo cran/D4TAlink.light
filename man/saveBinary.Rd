@@ -25,7 +25,7 @@ saveBinary(
 
 \item{dirCreate}{Logical, if TRUE (by default) the directory is created.}
 
-\item{encrypt}{encrypt the output, default: FALSE.}
+\item{encrypt}{encrypt the output, default: FALSE. If character string, then use the string as password.}
 
 \item{ask}{query encryption key from user, default FALSE.}
 }

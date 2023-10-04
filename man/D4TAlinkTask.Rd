@@ -36,7 +36,7 @@ There are different functions dedicated for this \code{D4TAlinkTask} object:
 # set D4TAlink's global parameters
 setTaskAuthor("Doe Johns")
 setTaskSponsor("mySponsor")
-stop("STOPHERE")
+
 # Create data repository
 setTaskRoot(file.path(tempdir(),"D4TAlink_example001"),dirCreate=TRUE)
 

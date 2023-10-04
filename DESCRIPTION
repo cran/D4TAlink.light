@@ -1,8 +1,8 @@
 Package: D4TAlink.light
 Type: Package
 Title: FAIR Data - Workflow Management
-Version: 2.1.11
-Date: 2022-10-19
+Version: 2.1.14
+Date: 2023-10-04
 Authors@R: c(
   person(given = "Gregoire", family = "Thomas", 
   role = c("aut", "cre"),
@@ -21,12 +21,12 @@ License: GPL-3
 Suggests: roxygen2 (>= 3.1.0), testthat,usethis,knitr,
         WriteXLS,XLConnect,openxlsx,xlsx, officedown, Biobase, getPass
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 URL: https://bitbucket.org/SQ4/d4talink.light, https://www.d4ta.link/
 ByteCompile: true
+Repository: CRAN
 BugReports: https://bitbucket.org/SQ4/d4talink.light/issues
 NeedsCompilation: no
-Packaged: 2022-10-22 09:45:55 UTC; Gregoire
-Repository: CRAN
-Date/Publication: 2022-10-22 10:07:50 UTC
+Packaged: 2023-10-04 14:11:09 UTC; Gregoire
+Date/Publication: 2023-10-04 14:30:02 UTC

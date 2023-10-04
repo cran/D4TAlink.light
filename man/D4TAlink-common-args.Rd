@@ -22,6 +22,8 @@
 
 \item{ext}{Filename extension.}
 
+\item{suffix}{Filename suffix, used to develop scripts for sub-analyses for a given task, default NA.}
+
 \item{dirType}{Directory type, e.g. 'bin' or 'data' or 'doc'.}
 
 \item{subdir}{(optional) Subdirectory.}

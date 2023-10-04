@@ -1,3 +1,23 @@
+D4TAlink.light v2.1.14
+================
+
+* Add argument 'suffix' to functions 'initTaskRmd', 'renderTaskRmd', and 'initTaskRscript'. 
+* Add section 'Conclusion' and 'Validation' to Rmd template.
+
+D4TAlink.light v2.1.13
+================
+
+* Correct bug in `initTaskRmd`, insert of root path. 
+
+D4TAlink.light v2.1.12
+================
+
+* Argument 'encrypt' of function 'saveBinary' can hold password.
+* Set attriby to helper code block in Rmd templates
+* Handle "%ROOT%" in formatTaskDocx
+* Add argument 'code' to restoreTask
+* Add argument 'password' to readBinary
+
 D4TAlink.light v2.1.11
 ================
 

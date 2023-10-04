@@ -47,13 +47,14 @@ archiveTask <- function(task,file,overwrite=FALSE,...) {
 
 #' Restore an archive containing the files of a given task from a file created with archiveTask.
 #' @param file full name of the input zip file
+#' @param code restore code, default TRUE
 #' @inheritParams D4TAlink-common-args
 #' @inheritParams utils::unzip
 #' @inheritDotParams utils::unzip
 #' @importFrom utils unzip
 #' @return if list FALSE, the task imported incisibly, otherwise the list of files in the archive.
 #' @export
-restoreTask <- function(file,overwrite=FALSE,list=FALSE,...) {
+restoreTask <- function(file,overwrite=FALSE,list=FALSE,code=TRUE,...) {
   dir.create(zd<-tempfile())
   on.exit(unlink(zd,recursive=TRUE))
   ls <- utils::unzip(file,list=list,exdir=zd,...)
@@ -74,10 +75,12 @@ restoreTask <- function(file,overwrite=FALSE,list=FALSE,...) {
   ## ======
   for(n in list.files(zd,recursive=FALSE,full.names=TRUE,include.dirs=TRUE)) {
     ty <- basename(n)
-    if(!ty%in%names(pz)) stop("unknown type")
-    for(f in list.files(n,recursive=FALSE,full.names=TRUE,include.dirs=TRUE)) {
-      if(!overwrite&&file.exists(file.path(pz[[ty]],basename(f)))) warning(paste0("file '",basename(f),"' already exists and won't be overwritten, please use argument 'overwrite'"))
-      file.copy(f,pz[[ty]],recursive=TRUE,copy.date=TRUE,overwrite=overwrite)
+    if((ty=="code")&&!code) {} else {
+      if(!ty%in%names(pz)) stop("unknown type")
+      for(f in list.files(n,recursive=FALSE,full.names=TRUE,include.dirs=TRUE)) {
+        if(!overwrite&&file.exists(file.path(pz[[ty]],basename(f)))) warning(paste0("file '",basename(f),"' already exists and won't be overwritten, please use argument 'overwrite'"))
+        file.copy(f,pz[[ty]],recursive=TRUE,copy.date=TRUE,overwrite=overwrite)
+      }
     }
   }
   ## ======

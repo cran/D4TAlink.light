@@ -1,6 +1,6 @@
 ---
 title: '%PROJECT% - %PACKAGE%'
-subtitle: '%TASK%'
+subtitle: '%TASK%%SUFFIX%'
 author: '%AUTHOR%'
 date: '%DATE%'
 output: 
@@ -32,7 +32,7 @@ classoption: twoside
 geometry: 'left=2cm,right=2cm,top=3cm,bottom=2cm'
 ---
 
-```{r eval=FALSE}
+```{r eval=FALSE, echo=FALSE, message=FALSE, warning=FALSE}
 # ===================== HELPER CODE ==========================
 if(FALSE) {
   library(D4TAlink.light)
@@ -91,7 +91,7 @@ library(D4TAlink.light)
 #library(D4TAlink)
 setTaskSponsor("%SPONSOR%")
 setTaskStructure(pathsDefault)
-try(setTaskRoot("%ROOT%"))
+# try(setTaskRoot("%ROOT%"))
 ```
 
 ```{r loadTask}
@@ -154,7 +154,7 @@ boxplot(1:8)
 ```
 
 
-# Output
+## Output files
 
 The section contains detailed information on output (incl. location).
 
@@ -167,6 +167,30 @@ The section contains detailed information on output (incl. location).
 # saveBinary(ass,ta,"assays")
 
 ```
+
+# Conclusions
+
+Describe here the conclusions of the analyses. 
+
+# Validation 
+
+Describe here the process used to validate the statistical analysis performed above. 
+
+Depending on an estimation of risk, the validation is typically 1) no validation, 
+2) a review of report objects, 3) a standard code review, 4) extended code review, or 
+5) double coding of the analyses. 
+
+Example: 
+Validation of these analyses by double coding was performed in task %TASK%_validation.
+
+```{r initValidation, echo=TRUE, eval=FALSE}
+
+## Create a validation task
+vt <- initTask(project="%PROJECT%", package="%PACKAGE%", taskname="%TASK%_validation")
+initTaskRmd(vt)
+
+```
+
 
 \newpage
 

@@ -1,16 +1,18 @@
 ## =======================================================================
 #' Restore R object from binary file.
 #' @param quiet issue warning if file does not exists.
+#' @param password encryption password, default NULL
 #' @inheritParams D4TAlink-common-args
 #' @inheritParams getTaskEnckey
 #' @return Object stored in binary file, or \code{NULL} if file does not exist.
 #' @importFrom openssl aes_cbc_decrypt sha256
 #' @export
-readBinary <- function(task,type,subdir=NULL,dirCreate=FALSE,ask=FALSE,quiet=FALSE) {
+readBinary <- function(task,type,subdir=NULL,dirCreate=FALSE,ask=FALSE,quiet=FALSE,password=NULL) {
   fn <- binaryFn(task,type,ext="%e%",subdir=subdir,dirCreate=dirCreate)
   res <- NULL
   if(file.exists(gsub("%e%","sq5",fn))) {
-    key <- getTaskEnckey(ask=ask)
+    if(!is.null(password)) key <- password
+    else  key <- getTaskEnckey(ask=ask)
     res <- unserialize(openssl::aes_cbc_decrypt(readRDS(gsub("%e%","sq5",fn)),key=openssl::sha256(charToRaw(key))))
   } else if(file.exists(gsub("%e%","sq4",fn))) {
     res <- readRDS(gsub("%e%","sq4",fn))
@@ -25,7 +27,7 @@ readBinary <- function(task,type,subdir=NULL,dirCreate=FALSE,ask=FALSE,quiet=FAL
 
 #' Save R object in binary file.
 #' @param object R object to serialize.
-#' @param encrypt encrypt the output, default: FALSE.
+#' @param encrypt encrypt the output, default: FALSE. If character string, then use the string as password.
 #' @inheritParams D4TAlink-common-args
 #' @inheritParams getTaskEnckey
 #' @return the file name invisibly.
@@ -33,12 +35,23 @@ readBinary <- function(task,type,subdir=NULL,dirCreate=FALSE,ask=FALSE,quiet=FAL
 #' @export
 saveBinary <- function(object,task,type,subdir=NULL,dirCreate=TRUE,encrypt=FALSE,ask=FALSE) {
   fn <- binaryFn(task,type,ext=ifelse(encrypt,"sq5","rds"),subdir=subdir,dirCreate=dirCreate)
-  if(encrypt) {
+  if(is.character(encrypt)) {
+    key <- encrypt
+    if (nchar(key) < 8)
+      stop("encryption key must have at least eight characters")
+  } else if(encrypt) {
     key <- getTaskEnckey(ask=ask)
     saveRDS(openssl::aes_cbc_encrypt(serialize(object,NULL),key=openssl::sha256(charToRaw(key))),fn)
   } else saveRDS(object,fn)
   invisible(fn)
 }
+#' Save R object in encrypted binary file.
+#' @inheritParams D4TAlink-common-args
+#' @inheritParams saveBinary
+#' @return the file name invisibly.
+#' @export
+saveBinaryE <- function(object,task,type,subdir=NULL,dirCreate=TRUE,ask=FALSE)
+  saveBinary(object,task,type,subdir=subdir,dirCreate=dirCreate,ask=ask,encrypt=TRUE)
 ## =======================================================================
 
 ## =======================================================================

@@ -1,658 +1,735 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>1. Introduction</title>
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<script type="text/javascript">
-window.onload = function() {
-  var imgs = document.getElementsByTagName('img'), i, img;
-  for (i = 0; i < imgs.length; i++) {
-    img = imgs[i];
-    // center an image if it is the only element of its parent
-    if (img.parentElement.childElementCount === 1)
-      img.parentElement.style.textAlign = 'center';
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Grégoire Thomas" />
+
+<meta name="date" content="2023-10-04" />
+
+<title>D4TAlink.light - Manual</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
   }
-};
+});
 </script>
 
-<!-- Styles for R syntax highlighter -->
 <style type="text/css">
-   pre .operator,
-   pre .paren {
-     color: rgb(104, 118, 135)
-   }
-
-   pre .literal {
-     color: #990073
-   }
-
-   pre .number {
-     color: #099;
-   }
-
-   pre .comment {
-     color: #998;
-     font-style: italic
-   }
-
-   pre .keyword {
-     color: #900;
-     font-weight: bold
-   }
-
-   pre .identifier {
-     color: rgb(0, 0, 0);
-   }
-
-   pre .string {
-     color: #d14;
-   }
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
 </style>
 
-<!-- R syntax highlighter -->
-<script type="text/javascript">
-var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
-hljs.initHighlightingOnLoad();
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
 </script>
 
 
 
-<style type="text/css">
-body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 13px;
-}
 
-body {
-  max-width: 800px;
-  margin: auto;
-  padding: 1em;
-  line-height: 20px;
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
 }
-
-tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
 }
-
-h1 {
-   font-size:2.2em;
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
 }
-
-h2 {
-   font-size:1.8em;
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
 }
-
-h3 {
-   font-size:1.4em;
+#TOC ul ul {
+margin-left: -2em;
 }
-
-h4 {
-   font-size:1.0em;
+#TOC li {
+line-height: 16px;
 }
-
-h5 {
-   font-size:0.9em;
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
 }
-
-h6 {
-   font-size:0.8em;
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
 }
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
 }
-
-pre, img {
-  max-width: 100%;
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
 }
 pre {
-  overflow-x: auto;
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
 }
-pre code {
-   display: block; padding: 0.5em;
+pre:not([class]) {
+background-color: #f7f7f7;
 }
-
 code {
-  font-size: 92%;
-  border: 1px solid #ccc;
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
 }
-
-code[class] {
-  background-color: #F8F8F8;
+p > code, li > code {
+padding: 2px 0px;
 }
-
-table, td, th {
-  border: none;
+div.figure {
+text-align: center;
 }
-
-blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
 }
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
 }
-
-@media print {
-   * {
-      background: transparent !important;
-      color: black !important;
-      filter:none !important;
-      -ms-filter: none !important;
-   }
-
-   body {
-      font-size:12pt;
-      max-width:100%;
-   }
-
-   a, a:visited {
-      text-decoration: underline;
-   }
-
-   hr {
-      visibility: hidden;
-      page-break-before: always;
-   }
-
-   pre, blockquote {
-      padding-right: 1em;
-      page-break-inside: avoid;
-   }
-
-   tr, img {
-      page-break-inside: avoid;
-   }
-
-   img {
-      max-width: 100% !important;
-   }
-
-   @page :left {
-      margin: 15mm 20mm 15mm 10mm;
-   }
-
-   @page :right {
-      margin: 15mm 10mm 15mm 20mm;
-   }
-
-   p, h2, h3 {
-      orphans: 3; widows: 3;
-   }
-
-   h2, h3 {
-      page-break-after: avoid;
-   }
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
 }
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
+
 
 
 
 </head>
 
 <body>
-<!--ts-->
 
-<ol>
+
+
+
+<h1 class="title toc-ignore">D4TAlink.light - Manual</h1>
+<h4 class="author">Grégoire Thomas</h4>
+<h4 class="date">October 04, 2023</h4>
+
+
+
+<!--ts-->
+<ol style="list-style-type: decimal">
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#quick-start">Quick start</a></li>
 <li><a href="#usage">Usage</a>
-
 <ul>
 <li><a href="#parametrisation">Parametrisation</a></li>
 <li><a href="#analysis-task">Analysis task</a></li>
 <li><a href="#task-content">Task content</a></li>
-<li><a href="#create-and-render-an-r-markdown-file">Create and render an R markdown file</a></li>
+<li><a href="#create-and-render-an-r-markdown-file">Create and render an
+R markdown file</a></li>
 <li><a href="#create-an-r-script">Create an R script</a></li>
 <li><a href="#report-data">Report data</a></li>
-<li><a href="#transfer-data-between-tasks">Transfer data between tasks</a></li>
+<li><a href="#transfer-data-between-tasks">Transfer data between
+tasks</a></li>
 <li><a href="#share-a-task">Share a task</a></li>
-<li><a href="#r-markdown-and-script-templates">R markdown and script templates</a></li>
+<li><a href="#r-markdown-and-script-templates">R markdown and script
+templates</a></li>
 <li><a href="#change-directory-structure">Change directory structure</a>
-&lt;!&ndash;te&ndash;&gt;</li>
+<!--te--></li>
 </ul></li>
 </ol>
-
+<div id="introduction" class="section level1">
 <h1>1. Introduction</h1>
-
-<p><a href="https://bitbucket.org/SQ4/d4talink.light/">D4TAlink.light</a> is an <a href="https://www.r-project.org/">R</a>
-package integrating <a href="https://www.d4ta.link/">D4TAlink</a>&#39;s <a href="https://www.r-project.org/">R</a> methods. <a href="https://bitbucket.org/SQ4/d4talink.light/">D4TAlink.light</a> enables seamless 
-compliance with FAIR data and ALCOA principles. </p>
-
-<p><a href="https://bitbucket.org/SQ4/d4talink.light/">D4TAlink.light</a>&#39;s key features:</p>
-
+<p><a href="https://bitbucket.org/SQ4/d4talink.light/">D4TAlink.light</a> is
+an <a href="https://www.r-project.org/">R</a> package integrating <a href="https://www.d4ta.link/">D4TAlink</a>’s <a href="https://www.r-project.org/">R</a> methods. <a href="https://bitbucket.org/SQ4/d4talink.light/">D4TAlink.light</a>
+enables seamless compliance with FAIR data and ALCOA principles.</p>
+<p><a href="https://bitbucket.org/SQ4/d4talink.light/">D4TAlink.light</a>’s
+key features:</p>
 <ul>
 <li>speed up data analytics and statistics projects,</li>
-<li>reduce resources and lower costs, </li>
-<li>enable traceability and reproducibility seamlessly, </li>
-<li>unclog data analysts&#39; life, </li>
-<li>ease collaboration, </li>
-<li>facilitate validation and review processes, </li>
+<li>reduce resources and lower costs,</li>
+<li>enable traceability and reproducibility seamlessly,</li>
+<li>unclog data analysts’ life,</li>
+<li>ease collaboration,</li>
+<li>facilitate validation and review processes,</li>
 <li>open, easy and light weight.</li>
 </ul>
-
-<p><a href="https://www.d4ta.link/">D4TAlink</a> is a software suite for the management of data analytics projects
-developed by <a href="https://www.SQU4RE.com">SQU4RE</a>.</p>
-
-<p>See also: </p>
-
-<ol>
+<p><a href="https://www.d4ta.link/">D4TAlink</a> is a software suite for
+the management of data analytics projects developed by <a href="https://www.SQU4RE.com">SQU4RE</a>.</p>
+<p>See also:</p>
+<ol style="list-style-type: decimal">
 <li>FAIR principles: Jacobsen et al., 2017 (<a href="https://doi.org/10.1162/dint_r_00024">doi:10.1162/dint_r_00024</a>)</li>
-<li>ALCOA principles: Food &amp; Drug Administration, 2018 (<a href="https://www.regulations.gov/document/FDA-2018-D-3984-0002">Data Integrity and Compliance With Drug CGMP - Questions and Answers Guidance for Industry</a>).</li>
+<li>ALCOA principles: Food &amp; Drug Administration, 2018 (<a href="https://www.regulations.gov/document/FDA-2018-D-3984-0002">Data
+Integrity and Compliance With Drug CGMP - Questions and Answers Guidance
+for Industry</a>).</li>
 </ol>
-
+</div>
+<div id="installation" class="section level1">
 <h1>2. Installation</h1>
-
-<p>Install from <a href="https://CRAN.R-project.org/package=D4TAlink.light">CRAN</a>: </p>
-
-<pre><code class="r">install.packages(&quot;D4TAlink.light&quot;)
-</code></pre>
-
+<p>Install from <a href="https://CRAN.R-project.org/package=D4TAlink.light">CRAN</a>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;D4TAlink.light&quot;</span>)</span></code></pre></div>
 <p>Install latest version from <a href="https://bitbucket.org/SQ4/d4talink.light">Bitbucket</a>:</p>
-
-<pre><code class="r">if (!require(&quot;devtools&quot;, quietly = TRUE))
-    install.packages(&quot;devtools&quot;)
-devtools::install_bitbucket(&quot;SQ4/d4talink.light&quot;,subdir=&quot;D4TAlink.light&quot;)
-</code></pre>
-
-<p>Note that you may need to install: </p>
-
-<ul>
-<li>the Bioconductor package <code>Biobase</code>  (<a href="https://bioconductor.org/install/">instructions</a>), and</li>
-<li>Rtools (<a href="https://cran.r-project.org/bin/windows/">cran.r-project.org/bin/windows</a>).</li>
-</ul>
-
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;devtools&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_bitbucket</span>(<span class="st">&quot;SQ4/d4talink.light&quot;</span>,<span class="at">subdir=</span><span class="st">&quot;D4TAlink.light&quot;</span>)</span></code></pre></div>
+<p>Note that you may need to install: - the Bioconductor package
+<code>Biobase</code> (<a href="https://bioconductor.org/install/">instructions</a>), and - Rtools
+(<a href="https://cran.r-project.org/bin/windows/">cran.r-project.org/bin/windows</a>).</p>
+</div>
+<div id="quick-start" class="section level1">
 <h1>3. Quick start</h1>
-
-<ol>
+<ol style="list-style-type: decimal">
 <li>Load <a href="https://bitbucket.org/SQ4/d4talink.light/">D4TAlink.light</a></li>
 </ol>
-
-<pre><code class="r">if (!require(&quot;D4TAlink.light&quot;, quietly = TRUE)) install.packages(&quot;D4TAlink.light&quot;)
-library(D4TAlink.light)
-</code></pre>
-
-<ol>
-<li>Parametrise </li>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;D4TAlink.light&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;D4TAlink.light&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(D4TAlink.light)</span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>Parametrise</li>
 </ol>
-
-<pre><code class="r">setTaskAuthor(&quot;Doe Johns&quot;)
-setTaskSponsor(&quot;myClient&quot;)
-setTaskRoot(&quot;~/myDataRepository&quot;, dirCreate = TRUE)
-</code></pre>
-
-<ol>
-<li>Create two tasks (<code>package</code> refers here to a <em>work package</em>)</li>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">setTaskAuthor</span>(<span class="st">&quot;Doe Johns&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">setTaskSponsor</span>(<span class="st">&quot;myClient&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">setTaskRoot</span>(<span class="st">&quot;~/myDataRepository&quot;</span>, <span class="at">dirCreate =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>Create two tasks (<code>package</code> refers here to a <em>work
+package</em>)</li>
 </ol>
-
-<pre><code class="r">task1 &lt;- initTask(project = &quot;DiseaseABC&quot;, 
-                  package = &quot;myStudy&quot;, 
-                  taskname = &quot;2022-09-01_myFirstAnalysis&quot;)
-task2 &lt;- initTask(project = &quot;DiseaseABC&quot;, 
-                  package = &quot;myStudy&quot;, 
-                  taskname = &quot;2022-09-05_mySecondAnalysis&quot;)
-</code></pre>
-
-<ol>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>task1 <span class="ot">&lt;-</span> <span class="fu">initTask</span>(<span class="at">project =</span> <span class="st">&quot;DiseaseABC&quot;</span>, </span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>                  <span class="at">package =</span> <span class="st">&quot;myStudy&quot;</span>, </span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>                  <span class="at">taskname =</span> <span class="st">&quot;2022-09-01_myFirstAnalysis&quot;</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>task2 <span class="ot">&lt;-</span> <span class="fu">initTask</span>(<span class="at">project =</span> <span class="st">&quot;DiseaseABC&quot;</span>, </span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>                  <span class="at">package =</span> <span class="st">&quot;myStudy&quot;</span>, </span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>                  <span class="at">taskname =</span> <span class="st">&quot;2022-09-05_mySecondAnalysis&quot;</span>)</span></code></pre></div>
+<ol start="4" style="list-style-type: decimal">
 <li>List the tasks in repository</li>
 </ol>
-
-<pre><code class="r">print(listTasks())             
-</code></pre>
-
-<ol>
-<li>Load a task from the repository </li>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">listTasks</span>())             </span></code></pre></div>
+<ol start="5" style="list-style-type: decimal">
+<li>Load a task from the repository</li>
 </ol>
-
-<pre><code class="r">mytask &lt;- loadTask(project = &quot;DiseaseABC&quot;, 
-                  package = &quot;myStudy&quot;, 
-                  taskname = &quot;2022-09-05_mySecondAnalysis&quot;)
-</code></pre>
-
-<ol>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>mytask <span class="ot">&lt;-</span> <span class="fu">loadTask</span>(<span class="at">project =</span> <span class="st">&quot;DiseaseABC&quot;</span>, </span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>                  <span class="at">package =</span> <span class="st">&quot;myStudy&quot;</span>, </span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>                  <span class="at">taskname =</span> <span class="st">&quot;2022-09-05_mySecondAnalysis&quot;</span>)</span></code></pre></div>
+<ol start="6" style="list-style-type: decimal">
 <li>Add data to a task</li>
 </ol>
-
-<pre><code class="r">d &lt;- list(letters = data.frame(a = LETTERS, b = letters, c = 1:length(letters)), 
-          other = data.frame(a = 1:3, b = 11:13))
-saveBinary(d, mytask, &quot;myTables&quot;)
-</code></pre>
-
-<ol>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">letters =</span> <span class="fu">data.frame</span>(<span class="at">a =</span> LETTERS, <span class="at">b =</span> letters, <span class="at">c =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(letters)), </span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>          <span class="at">other =</span> <span class="fu">data.frame</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">b =</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">13</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="fu">saveBinary</span>(d, mytask, <span class="st">&quot;myTables&quot;</span>)</span></code></pre></div>
+<ol start="7" style="list-style-type: decimal">
 <li>Load data from a task</li>
 </ol>
-
-<pre><code class="r">e  &lt;- readBinary(mytask, &quot;myTables&quot;)
-</code></pre>
-
-<ol>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>e  <span class="ot">&lt;-</span> <span class="fu">readBinary</span>(mytask, <span class="st">&quot;myTables&quot;</span>)</span></code></pre></div>
+<ol start="8" style="list-style-type: decimal">
 <li>Add reports to a task</li>
 </ol>
-
-<pre><code class="r">excelfilename &lt;- saveReportXls(d, mytask, &quot;tables&quot;)
-
-pdffilename &lt;- pdfReport(mytask, &quot;myPlot&quot;, dim = c(150, 150)) # 150mm x 150mm
-plot(pi)
-dev.off()
-
-csvfile &lt;- reportFn(mytask, &quot;someData&quot;, &quot;csv&quot;)
-p &lt;- data.frame(a = LETTERS, b = letters, c = 1:length(letters))
-write.table(p, csvfile)
-print(csvfile)
-</code></pre>
-
-<ol>
-<li>Add R markdown file from template to a task </li>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>excelfilename <span class="ot">&lt;-</span> <span class="fu">saveReportXls</span>(d, mytask, <span class="st">&quot;tables&quot;</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>pdffilename <span class="ot">&lt;-</span> <span class="fu">pdfReport</span>(mytask, <span class="st">&quot;myPlot&quot;</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">150</span>, <span class="dv">150</span>)) <span class="co"># 150mm x 150mm</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="fu">plot</span>(pi)</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>csvfile <span class="ot">&lt;-</span> <span class="fu">reportFn</span>(mytask, <span class="st">&quot;someData&quot;</span>, <span class="st">&quot;csv&quot;</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">a =</span> LETTERS, <span class="at">b =</span> letters, <span class="at">c =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(letters))</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="fu">write.table</span>(p, csvfile)</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="fu">print</span>(csvfile)</span></code></pre></div>
+<ol start="9" style="list-style-type: decimal">
+<li>Add R markdown file from template to a task</li>
 </ol>
-
-<pre><code class="r">rmdfile &lt;- initTaskRmd(mytask)
-print(rmdfile)
-</code></pre>
-
-<ol>
-<li>Render a task&#39;s R markdown file</li>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>rmdfile <span class="ot">&lt;-</span> <span class="fu">initTaskRmd</span>(mytask)</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">print</span>(rmdfile)</span></code></pre></div>
+<ol start="10" style="list-style-type: decimal">
+<li>Render a task’s R markdown file</li>
 </ol>
-
-<pre><code class="r"># May require having run &#39;tinytex::install_tinytex()&#39;
-docfile &lt;- renderTaskRmd(mytask) 
-if (require(&quot;Biobase&quot;, quietly = TRUE)) Biobase::openPDF(docfile)
-</code></pre>
-
-<ol>
-<li>List content of task </li>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># May require having run &#39;tinytex::install_tinytex()&#39;</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>docfile <span class="ot">&lt;-</span> <span class="fu">renderTaskRmd</span>(mytask) </span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">require</span>(<span class="st">&quot;Biobase&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) Biobase<span class="sc">::</span><span class="fu">openPDF</span>(docfile)</span></code></pre></div>
+<ol start="11" style="list-style-type: decimal">
+<li>List content of task</li>
 </ol>
-
-<pre><code class="r">print(listTaskFiles(mytask))
-</code></pre>
-
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">listTaskFiles</span>(mytask))</span></code></pre></div>
+</div>
+<div id="usage" class="section level1">
 <h1>4. Usage</h1>
-
+<div id="parametrisation" class="section level2">
 <h2>4.1. Parametrisation</h2>
-
-<p>Once the R package loaded, user must set D4TAlink&#39;s global parameters, namely 
-the name of the data analyst and the name of the study sponsor.</p>
-
-<pre><code class="r">library(D4TAlink.light)
-
-setTaskAuthor(&quot;Doe Johns&quot;)
-setTaskSponsor(&quot;mySponsor&quot;)
-</code></pre>
-
-<p>The location of the data file repository, must then be defined. Indeed, D4TAlink 
-manages data and information in flat files within a structured directory tree. </p>
-
-<pre><code class="r">setTaskRoot(file.path(tempdir(),&quot;D4TAlink_example001&quot;),dirCreate=TRUE)
-</code></pre>
-
+<p>Once the R package loaded, user must set D4TAlink’s global
+parameters, namely the name of the data analyst and the name of the
+study sponsor.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">library</span>(D4TAlink.light)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="fu">setTaskAuthor</span>(<span class="st">&quot;Doe Johns&quot;</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="fu">setTaskSponsor</span>(<span class="st">&quot;mySponsor&quot;</span>)</span></code></pre></div>
+<p>The location of the data file repository, must then be defined.
+Indeed, D4TAlink manages data and information in flat files within a
+structured directory tree.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">setTaskRoot</span>(<span class="fu">file.path</span>(<span class="fu">tempdir</span>(),<span class="st">&quot;D4TAlink_example001&quot;</span>),<span class="at">dirCreate=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <p>As described further below, other parameters can be defined.</p>
-
-<pre><code class="r">setTaskRmdTemplate(&quot;/SOME/WHERE/my.Rmd&quot;)
-setTaskStructure(pathsDefault)
-</code></pre>
-
-<p>Note that D4TAlink&#39;s parameters can be set via the <a href="https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Invoking-R"><code>.Renviron</code></a> 
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">setTaskRmdTemplate</span>(<span class="st">&quot;/SOME/WHERE/my.Rmd&quot;</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="fu">setTaskStructure</span>(pathsDefault)</span></code></pre></div>
+<p>Note that D4TAlink’s parameters can be set via the <a href="https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Invoking-R"><code>.Renviron</code></a>
 file located in the system home directory.</p>
-
 <pre><code>D4TAlink_author=&quot;Dow Johns&quot;
 D4TAlink_sponsor=&quot;CompanyA&quot;
 D4TAlink_root=&quot;/SOME/WHERE/D4TAlink_example001&quot;
 D4TAlink_rmdtempl=&quot;/SOME/WHERE/my.Rmd&quot;
 D4TAlink_rscripttempl=&quot;/SOME/WHERE/my.R&quot;
-D4TAlink_pathgen=&quot;pathsDefault&quot;
-</code></pre>
-
+D4TAlink_pathgen=&quot;pathsDefault&quot;</code></pre>
+</div>
+<div id="analysis-task" class="section level2">
 <h2>4.2. Analysis task</h2>
-
-<p>A data analysis workflow usually comprises a succession of distinct analyses tasks. 
-A typical analysis workflow would comprise the following tasks:</p>
-
-<ol>
-<li>exporting and loading of source data, </li>
-<li>data transformation (e.g., normalization and imputation), </li>
-<li>descriptive statistics, and </li>
-<li>statistical modelling. </li>
+<p>A data analysis workflow usually comprises a succession of distinct
+analyses tasks. A typical analysis workflow would comprise the following
+tasks:</p>
+<ol style="list-style-type: decimal">
+<li>exporting and loading of source data,</li>
+<li>data transformation (e.g., normalization and imputation),</li>
+<li>descriptive statistics, and</li>
+<li>statistical modelling.</li>
 </ol>
-
-<p>Coding these successive tasks using a single analysis script is bad practice for 
-multiple reasons. Firstly, the analysis scripts become lengthy and thus difficult 
-to write, review and maintain. Further, this prevents code reuse and it hinders 
-project agility. Finally, this complexifies collaboration between stake holders. </p>
-
-<p><a href="https://www.d4ta.link">D4TAlink</a> defines the &#39;analysis task&#39; as a central concept. A data analysis workflow 
-consists of a succession of tasks that could be arborescent. </p>
-
-<p>Each task is assigned to a <strong>work package</strong>, which is assigned to a <strong>project</strong>, and
-each project is assigned to a <strong>sponsor</strong>. </p>
-
+<p>Coding these successive tasks using a single analysis script is bad
+practice for multiple reasons. Firstly, the analysis scripts become
+lengthy and thus difficult to write, review and maintain. Further, this
+prevents code reuse and it hinders project agility. Finally, this
+complexifies collaboration between stake holders.</p>
+<p><a href="https://www.d4ta.link">D4TAlink</a> defines the ‘analysis
+task’ as a central concept. A data analysis workflow consists of a
+succession of tasks that could be arborescent.</p>
+<p>Each task is assigned to a <strong>work package</strong>, which is
+assigned to a <strong>project</strong>, and each project is assigned to
+a <strong>sponsor</strong>.</p>
 <p>To create an analysis task in R use the following calls.</p>
-
-<pre><code class="r"># Set the base parameters 
-library(D4TAlink.light)
-setTaskAuthor(&quot;Doe Johns&quot;)
-setTaskSponsor(&quot;mySponsor&quot;)
-setTaskRoot(file.path(tempdir(),&quot;D4TAlink_example001&quot;),dirCreate=TRUE)
-
-# create a task
-task &lt;- initTask(project=&quot;myProject&quot;,
-                 package=&quot;myPackage&quot;,
-                 taskname=sprintf(&quot;%s_myTask&quot;,format(Sys.time(),&quot;%Y%m%d&quot;)))
-print(listTasks())             
-</code></pre>
-
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co"># Set the base parameters </span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="fu">library</span>(D4TAlink.light)</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="fu">setTaskAuthor</span>(<span class="st">&quot;Doe Johns&quot;</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="fu">setTaskSponsor</span>(<span class="st">&quot;mySponsor&quot;</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="fu">setTaskRoot</span>(<span class="fu">file.path</span>(<span class="fu">tempdir</span>(),<span class="st">&quot;D4TAlink_example001&quot;</span>),<span class="at">dirCreate=</span><span class="cn">TRUE</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="co"># create a task</span></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>task <span class="ot">&lt;-</span> <span class="fu">initTask</span>(<span class="at">project=</span><span class="st">&quot;myProject&quot;</span>,</span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>                 <span class="at">package=</span><span class="st">&quot;myPackage&quot;</span>,</span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>                 <span class="at">taskname=</span><span class="fu">sprintf</span>(<span class="st">&quot;%s_myTask&quot;</span>,<span class="fu">format</span>(<span class="fu">Sys.time</span>(),<span class="st">&quot;%Y%m%d&quot;</span>)))</span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">listTasks</span>())             </span></code></pre></div>
+</div>
+<div id="task-content" class="section level2">
 <h2>4.3. Task content</h2>
-
-<p>Each task has it&#39;s own directory structure. The task contains storage for five types of 
-data: </p>
-
-<ol>
-<li><strong>output data</strong>: typically, the data produced by the script in for of excel files, graphic files, &hellip;, </li>
-<li><strong>source data</strong>: local storage for the input data provided by third parties, </li>
-<li><strong>analysis scripts</strong>: data analysis scripts in R, SAS, python, &hellip;, </li>
-<li><strong>documentation</strong>: documentation of the analysis task, </li>
-<li><strong>binary data</strong>: output data for the task stored in binary format for follow-up task. </li>
+<p>Each task has it’s own directory structure. The task contains storage
+for five types of data:</p>
+<ol style="list-style-type: decimal">
+<li><strong>output data</strong>: typically, the data produced by the
+script in for of excel files, graphic files, …,</li>
+<li><strong>source data</strong>: local storage for the input data
+provided by third parties,</li>
+<li><strong>analysis scripts</strong>: data analysis scripts in R, SAS,
+python, …,</li>
+<li><strong>documentation</strong>: documentation of the analysis
+task,</li>
+<li><strong>binary data</strong>: output data for the task stored in
+binary format for follow-up task.</li>
 </ol>
-
-<p>The location of these data can be obtained using respectively the functions <code>reportDir</code>, 
-<code>datasourceDir</code>, <code>progDir</code>, <code>docDir</code>, and <code>binaryDir</code>.   </p>
-
-<p>For traceability, the files within a task have specifically the format <code>[TASK_NAME]_[DATA_TYPE].[EXTENSTION]</code>, where <code>DATA_TYPE</code> is a short string 
-describing the content of the file, and <code>EXTENSION</code> the file tyle (e.g., <code>pdf</code> or 
-<code>xlsx</code>). By convention <code>TASK_NAME</code> has a date as prefix with format <code>%Y%m%d_</code>, 
-and <code>DATA_TYPE</code> does not contain underscores or dots, <code>_</code> or <code>.</code>.</p>
-
-<p>The function <code>listTaskFiles</code> returns a list of files associated with a task: </p>
-
-<pre><code class="r">listTaskFiles(task)
-</code></pre>
-
-<p>Similarly, the function <code>listTasks</code> returns a list of all tasks in the repository: </p>
-
-<pre><code class="r">listTasks()
-</code></pre>
-
+<p>The location of these data can be obtained using respectively the
+functions <code>reportDir</code>, <code>datasourceDir</code>,
+<code>progDir</code>, <code>docDir</code>, and
+<code>binaryDir</code>.</p>
+<p>For traceability, the files within a task have specifically the
+format <code>[TASK_NAME]_[DATA_TYPE].[EXTENSTION]</code>, where
+<code>DATA_TYPE</code> is a short string describing the content of the
+file, and <code>EXTENSION</code> the file tyle (e.g., <code>pdf</code>
+or <code>xlsx</code>). By convention <code>TASK_NAME</code> has a date
+as prefix with format <code>%Y%m%d_</code>, and <code>DATA_TYPE</code>
+does not contain underscores or dots, <code>_</code> or
+<code>.</code>.</p>
+<p>The function <code>listTaskFiles</code> returns a list of files
+associated with a task:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">listTaskFiles</span>(task)</span></code></pre></div>
+<p>Similarly, the function <code>listTasks</code> returns a list of all
+tasks in the repository:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">listTasks</span>()</span></code></pre></div>
+</div>
+<div id="create-and-render-an-r-markdown-file" class="section level2">
 <h2>4.4. Create and render an R markdown file</h2>
-
-<p>Documentation of a task is typically authored using 
-<a href="https://rmarkdown.rstudio.com/">R markdown</a> files (Rmd). <a href="https://www.d4ta.link">D4TAlink</a> 
-precognises to have one Rmd file per task. <code>D4TAlink.light</code> provides functions to create and render these files. </p>
-
+<p>Documentation of a task is typically authored using <a href="https://rmarkdown.rstudio.com/">R markdown</a> files (Rmd). <a href="https://www.d4ta.link">D4TAlink</a> precognises to have one Rmd
+file per task. <code>D4TAlink.light</code> provides functions to create
+and render these files.</p>
 <p>Creation of an R markdown file from template:</p>
-
-<pre><code class="r">file &lt;- initTaskRmd(task)
-print(file)
-</code></pre>
-
-<p>Rendering of the markdown file into the task documentation directory:</p>
-
-<pre><code class="r">file &lt;- renderTaskRmd(task) # may require having run &#39;tinytex::install_tinytex()&#39;
-Biobase::openPDF(file)
-</code></pre>
-
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">initTaskRmd</span>(task)</span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="fu">print</span>(file)</span></code></pre></div>
+<p>Rendering of the markdown file into the task documentation
+directory:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">renderTaskRmd</span>(task) <span class="co"># may require having run &#39;tinytex::install_tinytex()&#39;</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>Biobase<span class="sc">::</span><span class="fu">openPDF</span>(file)</span></code></pre></div>
+</div>
+<div id="create-an-r-script" class="section level2">
 <h2>4.5. Create an R script</h2>
-
-<p>For some tasks an R script may also be needed. A task script can be created from the default template: </p>
-
-<pre><code class="r">file &lt;- initTaskRscript(task)
-print(file)
-</code></pre>
-
+<p>For some tasks an R script may also be needed. A task script can be
+created from the default template:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">initTaskRscript</span>(task)</span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="fu">print</span>(file)</span></code></pre></div>
+</div>
+<div id="report-data" class="section level2">
 <h2>4.6. Report data</h2>
-
-<p>To output a report file in the output directory of a task, use the following.</p>
-
+<p>To output a report file in the output directory of a task, use the
+following.</p>
 <p><strong>XLSX</strong></p>
-
-<pre><code class="r">d &lt;- list(letters=data.frame(a=LETTERS,b=letters,c=1:length(letters)),
-          other=data.frame(a=1:3,b=11:13))
-file &lt;- saveReportXls(d,task,&quot;tables&quot;)
-print(file)
-</code></pre>
-
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">letters=</span><span class="fu">data.frame</span>(<span class="at">a=</span>LETTERS,<span class="at">b=</span>letters,<span class="at">c=</span><span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(letters)),</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>          <span class="at">other=</span><span class="fu">data.frame</span>(<span class="at">a=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="at">b=</span><span class="dv">11</span><span class="sc">:</span><span class="dv">13</span>))</span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">saveReportXls</span>(d,task,<span class="st">&quot;tables&quot;</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="fu">print</span>(file)</span></code></pre></div>
 <p><strong>PDF</strong></p>
-
-<pre><code class="r">file &lt;- pdfReport(task,c(&quot;plots&quot;,1),dim=c(100,100))
-hist(rnorm(100))
-dev.off()
-Biobase::openPDF(file)
-</code></pre>
-
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">pdfReport</span>(task,<span class="fu">c</span>(<span class="st">&quot;plots&quot;</span>,<span class="dv">1</span>),<span class="at">dim=</span><span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">100</span>))</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">rnorm</span>(<span class="dv">100</span>))</span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>Biobase<span class="sc">::</span><span class="fu">openPDF</span>(file)</span></code></pre></div>
 <p><strong>PNG</strong></p>
-
-<pre><code class="r">file &lt;- pngReport(task,c(&quot;plots&quot;,1),dim=c(300,300))
-hist(rnorm(100))
-dev.off()
-print(file)
-</code></pre>
-
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">pngReport</span>(task,<span class="fu">c</span>(<span class="st">&quot;plots&quot;</span>,<span class="dv">1</span>),<span class="at">dim=</span><span class="fu">c</span>(<span class="dv">300</span>,<span class="dv">300</span>))</span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">rnorm</span>(<span class="dv">100</span>))</span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a><span class="fu">print</span>(file)</span></code></pre></div>
 <p><strong>JPEG</strong></p>
-
-<pre><code class="r">file &lt;- jpegReport(task,c(&quot;plots&quot;,1),dim=c(300,300))
-hist(rnorm(100))
-dev.off()
-print(file)
-</code></pre>
-
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">jpegReport</span>(task,<span class="fu">c</span>(<span class="st">&quot;plots&quot;</span>,<span class="dv">1</span>),<span class="at">dim=</span><span class="fu">c</span>(<span class="dv">300</span>,<span class="dv">300</span>))</span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">rnorm</span>(<span class="dv">100</span>))</span>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a><span class="fu">print</span>(file)</span></code></pre></div>
 <p><strong>Other</strong></p>
-
-<pre><code class="r">file &lt;- reportFn(task,&quot;someData&quot;,&quot;csv&quot;)
-d &lt;- data.frame(a=LETTERS,b=letters,c=1:length(letters))
-write.table(d,file)
-print(file)
-</code></pre>
-
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">reportFn</span>(task,<span class="st">&quot;someData&quot;</span>,<span class="st">&quot;csv&quot;</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">a=</span>LETTERS,<span class="at">b=</span>letters,<span class="at">c=</span><span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(letters))</span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a><span class="fu">write.table</span>(d,file)</span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a><span class="fu">print</span>(file)</span></code></pre></div>
+</div>
+<div id="transfer-data-between-tasks" class="section level2">
 <h2>4.7. Transfer data between tasks</h2>
-
-<p>Tasks each constituting an element in a stepwise analysis process. Data can be transferred 
-from a task to another. To do so, R objects must be stored by the parent task 
-using the call <code>saveBinary(object,task,&quot;ojectType&quot;)</code>. The child task may then load the data 
-from the parent task using the call <code>saveBinary(loadTask(...),&quot;ojectType&quot;)</code>.  </p>
-
+<p>Tasks each constituting an element in a stepwise analysis process.
+Data can be transferred from a task to another. To do so, R objects must
+be stored by the parent task using the call
+<code>saveBinary(object,task,&quot;ojectType&quot;)</code>. The child task may
+then load the data from the parent task using the call
+<code>saveBinary(loadTask(...),&quot;ojectType&quot;)</code>.</p>
 <p>Saving data in a parent task:</p>
-
-<pre><code class="r">d &lt;- list(letters = data.frame(a=LETTERS,b=letters,c=1:length(letters)),
-          other   = data.frame(a=1:3,b=11:13))
-task &lt;- initTask(project=&quot;myProject&quot;,
-                 package=&quot;myPackage&quot;,
-                 taskname=&quot;20220801_parentTask&quot;)
-file &lt;- saveBinary(d,task,&quot;someData&quot;)
-print(file)
-</code></pre>
-
-<p>Loading data from a child task: </p>
-
-<pre><code class="r">newtask &lt;- initTask(project=&quot;myProject&quot;,
-                    package=&quot;myPackage&quot;,
-                    taskname=&quot;20220801_childTask&quot;)
-
-oldtask &lt;- loadTask(newtask$project, newtask$package, &quot;20220801_parentTask&quot;)
-e &lt;- readBinary(oldtask,&quot;someData&quot;)
-print(lapply(e,head))
-</code></pre>
-
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">letters =</span> <span class="fu">data.frame</span>(<span class="at">a=</span>LETTERS,<span class="at">b=</span>letters,<span class="at">c=</span><span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(letters)),</span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>          <span class="at">other   =</span> <span class="fu">data.frame</span>(<span class="at">a=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="at">b=</span><span class="dv">11</span><span class="sc">:</span><span class="dv">13</span>))</span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>task <span class="ot">&lt;-</span> <span class="fu">initTask</span>(<span class="at">project=</span><span class="st">&quot;myProject&quot;</span>,</span>
+<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a>                 <span class="at">package=</span><span class="st">&quot;myPackage&quot;</span>,</span>
+<span id="cb29-5"><a href="#cb29-5" tabindex="-1"></a>                 <span class="at">taskname=</span><span class="st">&quot;20220801_parentTask&quot;</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">saveBinary</span>(d,task,<span class="st">&quot;someData&quot;</span>)</span>
+<span id="cb29-7"><a href="#cb29-7" tabindex="-1"></a><span class="fu">print</span>(file)</span></code></pre></div>
+<p>Loading data from a child task:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>newtask <span class="ot">&lt;-</span> <span class="fu">initTask</span>(<span class="at">project=</span><span class="st">&quot;myProject&quot;</span>,</span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>                    <span class="at">package=</span><span class="st">&quot;myPackage&quot;</span>,</span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>                    <span class="at">taskname=</span><span class="st">&quot;20220801_childTask&quot;</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a>oldtask <span class="ot">&lt;-</span> <span class="fu">loadTask</span>(newtask<span class="sc">$</span>project, newtask<span class="sc">$</span>package, <span class="st">&quot;20220801_parentTask&quot;</span>)</span>
+<span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">readBinary</span>(oldtask,<span class="st">&quot;someData&quot;</span>)</span>
+<span id="cb30-7"><a href="#cb30-7" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">lapply</span>(e,head))</span></code></pre></div>
+</div>
+<div id="share-a-task" class="section level2">
 <h2>4.8. Share a task</h2>
-
-<p>In order to share a task with coworkers, D4TAlink.light has functions to archive 
-and restore tasks. This permits easily transferring data, scripts and documentation 
-associated with a given task.</p>
-
-<p>Note this can be used for a range of other purposes, such as transferring tasks from a 
-local repository to a shared repository, and vice versa. </p>
-
-<p>Archiving a task: </p>
-
-<pre><code class="r">setTaskRoot(file.path(tempdir(),&quot;D4TAlink_exampleFrom&quot;),dirCreate=TRUE)
-task &lt;- initTask(project=&quot;myProject&quot;,
-                 package=&quot;myPackage&quot;,
-                 taskname=&quot;20220501_myTask&quot;)
-file &lt;- tempfile(fileext=&quot;.zip&quot;)
-archiveTask(task,file)
-print(reportDir(task))
-</code></pre>
-
+<p>In order to share a task with coworkers, D4TAlink.light has functions
+to archive and restore tasks. This permits easily transferring data,
+scripts and documentation associated with a given task.</p>
+<p>Note this can be used for a range of other purposes, such as
+transferring tasks from a local repository to a shared repository, and
+vice versa.</p>
+<p>Archiving a task:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="fu">setTaskRoot</span>(<span class="fu">file.path</span>(<span class="fu">tempdir</span>(),<span class="st">&quot;D4TAlink_exampleFrom&quot;</span>),<span class="at">dirCreate=</span><span class="cn">TRUE</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a>task <span class="ot">&lt;-</span> <span class="fu">initTask</span>(<span class="at">project=</span><span class="st">&quot;myProject&quot;</span>,</span>
+<span id="cb31-3"><a href="#cb31-3" tabindex="-1"></a>                 <span class="at">package=</span><span class="st">&quot;myPackage&quot;</span>,</span>
+<span id="cb31-4"><a href="#cb31-4" tabindex="-1"></a>                 <span class="at">taskname=</span><span class="st">&quot;20220501_myTask&quot;</span>)</span>
+<span id="cb31-5"><a href="#cb31-5" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext=</span><span class="st">&quot;.zip&quot;</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" tabindex="-1"></a><span class="fu">archiveTask</span>(task,file)</span>
+<span id="cb31-7"><a href="#cb31-7" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">reportDir</span>(task))</span></code></pre></div>
 <p>Restoring a task in a different location:</p>
-
-<pre><code class="r">setTaskRoot(file.path(tempdir(),&quot;D4TAlink_exampleTo&quot;),dirCreate=TRUE)
-restoreTask(file)
-newtask &lt;- loadTask(project=&quot;myProject&quot;,
-                    package=&quot;myPackage&quot;,
-                    taskname=&quot;20220501_myTask&quot;)
-print(reportDir(newtask))
-</code></pre>
-
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="fu">setTaskRoot</span>(<span class="fu">file.path</span>(<span class="fu">tempdir</span>(),<span class="st">&quot;D4TAlink_exampleTo&quot;</span>),<span class="at">dirCreate=</span><span class="cn">TRUE</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a><span class="fu">restoreTask</span>(file)</span>
+<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>newtask <span class="ot">&lt;-</span> <span class="fu">loadTask</span>(<span class="at">project=</span><span class="st">&quot;myProject&quot;</span>,</span>
+<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a>                    <span class="at">package=</span><span class="st">&quot;myPackage&quot;</span>,</span>
+<span id="cb32-5"><a href="#cb32-5" tabindex="-1"></a>                    <span class="at">taskname=</span><span class="st">&quot;20220501_myTask&quot;</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">reportDir</span>(newtask))</span></code></pre></div>
+</div>
+<div id="r-markdown-and-script-templates" class="section level2">
 <h2>4.9. R markdown and script templates</h2>
-
-<p>The R markdown and script templates can be set using the functions <code>setTaskRmdTemplate</code> and <code>setTaskRscriptTemplate</code> as follows.  </p>
-
-<pre><code class="r">setTaskRmdTemplate(&quot;/SOME/WHERE/my.Rmd&quot;)
-setTaskRscriptTemplate(&quot;/SOME/WHERE/my.R&quot;)
-</code></pre>
-
-<p>The available path generation functions are <code>pathsDefault</code>, <code>pathsGLPG</code>, and <code>pathsPMS</code>.</p>
-
-<p>Further, the path path th the template can be set in the <a href="https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Invoking-R"><code>.Renviron</code></a> file:</p>
-
+<p>The R markdown and script templates can be set using the functions
+<code>setTaskRmdTemplate</code> and <code>setTaskRscriptTemplate</code>
+as follows.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a><span class="fu">setTaskRmdTemplate</span>(<span class="st">&quot;/SOME/WHERE/my.Rmd&quot;</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a><span class="fu">setTaskRscriptTemplate</span>(<span class="st">&quot;/SOME/WHERE/my.R&quot;</span>)</span></code></pre></div>
+<p>The available path generation functions are
+<code>pathsDefault</code>, <code>pathsGLPG</code>, and
+<code>pathsPMS</code>.</p>
+<p>Further, the path path th the template can be set in the <a href="https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Invoking-R"><code>.Renviron</code></a>
+file:</p>
 <pre><code>D4TAlink_rmdtempl=&quot;/SOME/WHERE/my.Rmd&quot;
-D4TAlink_rscripttempl=&quot;/SOME/WHERE/my.R&quot;
-</code></pre>
-
+D4TAlink_rscripttempl=&quot;/SOME/WHERE/my.R&quot;</code></pre>
+</div>
+<div id="change-directory-structure" class="section level2">
 <h2>4.10. Change directory structure</h2>
+<p>The directory structure can be customized, by creating a directory
+using the command <code>setTaskStructure</code> as follows.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a>fun <span class="ot">&lt;-</span> <span class="cf">function</span>(project,package,taskname,sponsor) {</span>
+<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a>  basePath <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">&quot;%ROOT%&quot;</span>,sponsor,project,package)</span>
+<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a>  paths <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb35-4"><a href="#cb35-4" tabindex="-1"></a>    <span class="at">root =</span> <span class="st">&quot;%ROOT%&quot;</span>,</span>
+<span id="cb35-5"><a href="#cb35-5" tabindex="-1"></a>    <span class="at">datasrc =</span> <span class="fu">file.path</span>(basePath, <span class="st">&quot;raw&quot;</span>, <span class="st">&quot;data_source&quot;</span>),</span>
+<span id="cb35-6"><a href="#cb35-6" tabindex="-1"></a>    <span class="at">data =</span> <span class="fu">file.path</span>(basePath, <span class="st">&quot;output&quot;</span>,<span class="st">&quot;adhoc&quot;</span>,taskname),</span>
+<span id="cb35-7"><a href="#cb35-7" tabindex="-1"></a>    <span class="at">bin  =</span> <span class="fu">file.path</span>(basePath, <span class="st">&quot;output&quot;</span>,<span class="st">&quot;adhoc&quot;</span>,taskname,<span class="st">&quot;bin&quot;</span>),</span>
+<span id="cb35-8"><a href="#cb35-8" tabindex="-1"></a>    <span class="at">code =</span> <span class="fu">file.path</span>(basePath, <span class="st">&quot;progs&quot;</span>),</span>
+<span id="cb35-9"><a href="#cb35-9" tabindex="-1"></a>    <span class="at">doc  =</span> <span class="fu">file.path</span>(basePath, <span class="st">&quot;docs&quot;</span>),</span>
+<span id="cb35-10"><a href="#cb35-10" tabindex="-1"></a>    <span class="at">log  =</span> <span class="fu">file.path</span>(basePath, <span class="st">&quot;output&quot;</span>,<span class="st">&quot;log&quot;</span>)</span>
+<span id="cb35-11"><a href="#cb35-11" tabindex="-1"></a>  )</span>
+<span id="cb35-12"><a href="#cb35-12" tabindex="-1"></a>}</span>
+<span id="cb35-13"><a href="#cb35-13" tabindex="-1"></a></span>
+<span id="cb35-14"><a href="#cb35-14" tabindex="-1"></a><span class="fu">setTaskStructure</span>(fun)</span></code></pre></div>
+<p>The available path generation functions are
+<code>pathsDefault</code>, <code>pathsGLPG</code>, and
+<code>pathsPMS</code>.</p>
+<p>Further, the path generator can be set in the <a href="https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Invoking-R"><code>.Renviron</code></a>
+file, the available functions being ‘pathsDefault’, ‘pathsGLPG’, and
+‘pathsPMS’:</p>
+<pre><code>D4TAlink_pathgen=&quot;pathsDefault&quot;</code></pre>
+</div>
+</div>
 
-<p>The directory structure can be customized, by creating a directory using the command <code>setTaskStructure</code> as follows.  </p>
 
-<pre><code class="r">fun &lt;- function(project,package,taskname,sponsor) {
-  basePath &lt;- file.path(&quot;%ROOT%&quot;,sponsor,project,package)
-  paths &lt;- list(
-    root = &quot;%ROOT%&quot;,
-    datasrc = file.path(basePath, &quot;raw&quot;, &quot;data_source&quot;),
-    data = file.path(basePath, &quot;output&quot;,&quot;adhoc&quot;,taskname),
-    bin  = file.path(basePath, &quot;output&quot;,&quot;adhoc&quot;,taskname,&quot;bin&quot;),
-    code = file.path(basePath, &quot;progs&quot;),
-    doc  = file.path(basePath, &quot;docs&quot;),
-    log  = file.path(basePath, &quot;output&quot;,&quot;log&quot;)
-  )
-}
 
-setTaskStructure(fun)
-</code></pre>
+<!-- code folding -->
 
-<p>The available path generation functions are <code>pathsDefault</code>, <code>pathsGLPG</code>, and <code>pathsPMS</code>.</p>
 
-<p>Further, the path generator can be set in the <a href="https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Invoking-R"><code>.Renviron</code></a> file, the available functions being &#39;pathsDefault&#39;, &#39;pathsGLPG&#39;, and &#39;pathsPMS&#39;:</p>
-
-<pre><code>D4TAlink_pathgen=&quot;pathsDefault&quot;
-</code></pre>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 </body>
-
 </html>

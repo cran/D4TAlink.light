@@ -1,6 +1,6 @@
 ---
 title: '%PROJECT% - %PACKAGE%'
-subtitle: '%TASK%'
+subtitle: '%TASK%%SUFFIX%'
 author: '%AUTHOR%'
 date: '%DATE%'
 output: 
@@ -33,7 +33,7 @@ classoption: twoside
 geometry: 'left=2cm,right=2cm,top=3cm,bottom=2cm'
 ---
 
-```{r eval=FALSE}
+```{r eval=FALSE, echo=FALSE, message=FALSE, warning=FALSE}
 # ===================== HELPER CODE ==========================
 if(FALSE) {
   library(D4TAlink.light)
@@ -92,7 +92,7 @@ library(D4TAlink.light)
 #library(D4TAlink)
 setTaskSponsor("%SPONSOR%")
 setTaskStructure(pathsDefault)
-try(setTaskRoot("%ROOT%"))
+# try(setTaskRoot("%ROOT%"))
 ```
 
 ```{r loadTask}

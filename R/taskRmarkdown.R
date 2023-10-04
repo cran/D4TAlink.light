@@ -3,8 +3,10 @@
 #' @inheritParams D4TAlink-common-args
 #' @return File path.
 #' @export
-rmdFn <- function(task)
-  file.path(getTaskPaths(task)[["code"]],paste0(task$task,".Rmd"))
+rmdFn <- function(task,suffix=NA) {
+  if(is.na(suffix)) return(file.path(getTaskPaths(task)[["code"]],paste0(task$task,".Rmd")))
+  else return(file.path(getTaskPaths(task)[["code"]],paste0(task$task,".",suffix,".Rmd")))
+}
 
 ## =======================================================================
 #' Create task template in Rmd format.
@@ -13,8 +15,8 @@ rmdFn <- function(task)
 #' @inheritParams base::readLines
 #' @return the file name invisibly.
 #' @export
-initTaskRmd <- function(task,encoding="unknown",overwrite=FALSE) {
-  fn <- rmdFn(task)
+initTaskRmd <- function(task,encoding="unknown",overwrite=FALSE,suffix=NA) {
+  fn <- rmdFn(task,suffix=suffix)
   if(file.exists(fn)&&!overwrite) stop("The task R markdown file already exists. Set 'overwrite' to FALSE to overwrite the existing file.")
   fo <- function(x) { for(e in c("%","_")) x<-gsub(e,paste0("\\",e),x,fixed=TRUE) ; x }
   tfn <- getTaskRmdTemplate()
@@ -22,6 +24,8 @@ initTaskRmd <- function(task,encoding="unknown",overwrite=FALSE) {
   tin <- gsub("%DATE%"    ,task$date,tin,fixed=TRUE)
   tin <- gsub("%TASKID%",taskID(task),tin,fixed=TRUE)
   tin <- gsub("%TASKIDX%",fo(taskID(task)),tin,fixed=TRUE)
+  tin <- gsub("%ROOT%",fo(getTaskRoot()),tin,fixed=TRUE)
+  tin <- gsub("%SUFFIX%",fo(ifelse(is.na(suffix),"",paste0(" - ",suffix))),tin,fixed=TRUE)
   u <- unlist(task)
   for(n in names(u)) {
     tin <- gsub(sprintf("%%%s%%",toupper(n)),u[[n]],tin,fixed=TRUE)
@@ -45,9 +49,8 @@ initTaskRmd <- function(task,encoding="unknown",overwrite=FALSE) {
 #' @importFrom rmarkdown render
 #' @return the file name invisibly.
 #' @export
-renderTaskRmd <- function(task,output_format=NULL,debug=FALSE,clean=TRUE,...){
-  ifn <- file.path(getTaskPaths(task)[["code"]],paste0(task$task,".Rmd"))
-  if(!file.exists(ifn)) ifn <- file.path(getTaskPaths(task)[["code"]],paste0(task$task,".rmd"))
+renderTaskRmd <- function(task,output_format=NULL,debug=FALSE,clean=TRUE,suffix=NA,...){
+  ifn <- rmdFn(task,suffix=suffix)
   if(!file.exists(ifn)) stop("R markdown file not found, create it using 'initTaskRmd'.")
   odr <- getTaskPaths(task)[["doc"]]
   if(debug) fn <- rmarkdown::render(input=ifn,output_dir=odr,
@@ -80,6 +83,7 @@ formatTaskDocx <- function(task,ifn) {
   setwd(tloc)
   on.exit(setwd(owd))
   for(f in list.files(".","[.]xml$",recursive=TRUE,full.names=TRUE)) {
+    if(options()$verbose) cat("  >",f,"\n")
     s <- readChar(f,file.info(f)$size)
     sa <- FALSE
     for(e in names(task)[sapply(task,is.character)]) {
@@ -92,11 +96,16 @@ formatTaskDocx <- function(task,ifn) {
       sa <- TRUE
       s <- gsub('%TYPE%','task report',s,fixed=TRUE)
     }
+    if(grepl('%ROOT%',s,fixed=TRUE)) {
+      sa <- TRUE
+      s <- gsub('%ROOT%',getTaskRoot(),s,fixed=TRUE)
+    }
     if(sa) {
-      #print(f)
+    if(options()$verbose) cat("*")
       cat(s,file=f)
       zip(ifn,f,flags="")
     }
+    if(options()$verbose) cat("\n")
   }
   unlink(tloc,recursive=TRUE)
   invisible(ifn)
